@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank you — Wonder Bowl</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" type="image/svg+xml" href="assets/web/favicon.svg" />
+
+  <!-- Same consent-gated analytics as the main site (shares consent choice). -->
+  <script src="analytics.js"></script>
+
+  <link rel="stylesheet" href="https://use.typekit.net/nnr5kpw.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <section class="field field--pink" style="min-height:100vh;display:grid;place-items:center;text-align:center;">
+    <div class="wrap" style="max-width:640px;">
+      <img src="assets/web/logo-white-crop.svg" alt="Wonder Bowl" style="height:60px;width:auto;margin:0 auto 1.5rem;" />
+      <h1>Thank you — your bowls are on the way!</h1>
+      <p class="lede" style="margin:1rem auto 1.75rem;max-width:44ch;">
+        We've got your order. We'll email you to confirm your San Francisco delivery day —
+        keep an eye out, good things are simmering.
+      </p>
+      <a class="btn btn--primary btn--lg" href="index.html">Back to Wonder Bowl</a>
+      <p class="final-cta__fine" style="margin-top:1.25rem;">A mealtime pic + honest feedback is all we ask in return. 🐾</p>
+    </div>
+  </section>
+
+  <script>
+    // Fire the completed-purchase event once, after Stripe redirects here.
+    // Stripe Payment Link success URL should be:  /thank-you.html?tier=1cup  (etc.)
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var tier = (params.get("tier") || "").toLowerCase();
+      var sessionId = params.get("session_id") || "";           // appended by Stripe
+      var VALUE = { "1cup": 15, "2cup": 24, "3cup": 33 };
+      var value = VALUE[tier] || 0;
+
+      function firePurchase() {
+        if (!window.wbTrack || !(window.wbConsentGranted && window.wbConsentGranted())) return;
+        window.wbTrack("purchase", {
+          currency: "USD",
+          value: value,
+          tier: tier,
+          transaction_id: sessionId || ("wb_" + tier + "_" + value),
+          items: [{ item_id: tier, item_name: tier + " 3-day sample set", price: value, quantity: 1 }]
+        });
+      }
+      // analytics.js loads the trackers on DOMContentLoaded (if consented); fire just after.
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", function () { setTimeout(firePurchase, 300); });
+      } else {
+        setTimeout(firePurchase, 300);
+      }
+    })();
+  </script>
+</body>
+</html>
