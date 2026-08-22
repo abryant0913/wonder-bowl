@@ -565,7 +565,7 @@ p { margin: 0 0 1rem; }
 .faq__body { padding: 0 0 1.1rem; animation: rise 0.35s ease both; }
 .faq__body p { margin: 0; font-size: 1.02rem; }
 .faq a { color: var(--purple); font-weight: 700; }
-.faq__dog { width: clamp(120px, 14vw, 155px); margin: 2.6rem auto 0; }
+.faq__dog { width: clamp(120px, 14vw, 155px); margin: 2.6rem auto -8rem; }
 .faq__dog img { width: 100%; }
 
 /* ---------- Yellow footer overrides ---------- */
