@@ -43,6 +43,7 @@
 
   /* Layout */
   --maxw: 1180px;
+  --wrap-pad-y: clamp(3.5rem, 8vw, 7rem);   /* .wrap vertical padding — dogs pull down by exactly this */
   --radius: 26px;
   --radius-sm: 16px;
   --shadow: 0 26px 60px -28px rgba(28, 3, 45, 0.55);
@@ -102,7 +103,7 @@ p { margin: 0 0 1rem; }
 .wrap {
   max-width: var(--maxw);
   margin: 0 auto;
-  padding: clamp(3.5rem, 8vw, 7rem) clamp(1.25rem, 4vw, 3rem);
+  padding: var(--wrap-pad-y) clamp(1.25rem, 4vw, 3rem);
   position: relative;
   z-index: 2;
 }
@@ -399,7 +400,10 @@ p { margin: 0 0 1rem; }
 .final-cta__accent { font-family: var(--display); font-weight: 100; color: var(--yellow); font-size: 1.6rem; }
 .final-cta__media { max-width: 340px; margin: 0.5rem auto 1.6rem; position: relative; }
 .final-cta__media img { filter: none; }
-.final-cta .dog--cta { position: static; display: block; width: 178px; margin: 1.8rem auto -8rem; transform: rotate(4deg); }
+/* Pull down by exactly the section's bottom padding so the paws land on the
+   colour boundary. .field is overflow:hidden — any more and the legs get clipped. */
+/* +7px offsets the extra bounding-box height the 4deg rotation adds below the paws. */
+.final-cta .dog--cta { position: static; display: block; width: 178px; margin: 1.8rem auto calc(var(--wrap-pad-y) * -1 + 7px); transform: rotate(4deg); }
 .final-cta__fine { font-size: 0.92rem; opacity: 0.9; margin-top: 1.25rem; }
 .final-cta .glow--1 { width: 420px; height: 420px; background: var(--yellow); top: -120px; left: -60px; opacity: 0.3; }
 
@@ -565,7 +569,7 @@ p { margin: 0 0 1rem; }
 .faq__body { padding: 0 0 1.1rem; animation: rise 0.35s ease both; }
 .faq__body p { margin: 0; font-size: 1.02rem; }
 .faq a { color: var(--purple); font-weight: 700; }
-.faq__dog { width: clamp(120px, 14vw, 155px); margin: 2.6rem auto -8rem; }
+.faq__dog { width: clamp(120px, 14vw, 155px); margin: 2.6rem auto calc(var(--wrap-pad-y) * -1); }
 .faq__dog img { width: 100%; }
 
 /* ---------- Yellow footer overrides ---------- */
@@ -589,6 +593,9 @@ p { margin: 0 0 1rem; }
   .pricing__grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
   .price-card--featured { transform: none; }
   .hero__sticker { display: none; }
+  /* The single-line trust row is ~700px of unbreakable content — it inflates the
+     whole document past the viewport once the hero stacks. Let it wrap. */
+  .hero__reassure { flex-wrap: wrap; justify-content: center; }
 }
 
 @media (max-width: 640px) {
@@ -596,12 +603,13 @@ p { margin: 0 0 1rem; }
   .hero__copy { text-align: center; }
   .hero__sub { max-width: 100%; margin: 0 auto; }
   .hero__actions { justify-content: center; }
-  .hero__reassure { justify-content: center; }
 }
 
 /* ---------- Consent banner ---------- */
 .consent {
-  position: fixed; left: 50%; bottom: 1rem; transform: translateX(-50%);
+  /* Centred with auto margins, NOT translateX(-50%): the `rise` animation ends on
+     `transform: none`, which would wipe out a centring transform once it finishes. */
+  position: fixed; left: 0; right: 0; bottom: 1rem; margin-inline: auto;
   z-index: 2000; width: min(680px, calc(100% - 1.5rem));
   display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem 1.2rem;
   background: var(--cream); color: var(--purple);
