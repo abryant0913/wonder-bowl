@@ -12,7 +12,7 @@
   /* ---- CONFIG — fill these in ------------------------------------------- */
   var GA4_ID     = "G-XXXXXXXXXX";   // TODO: your GA4 Measurement ID
   var CLARITY_ID = "y64z7ixc68";     // Microsoft Clarity project ID (set)
-  var PIXEL_ID   = "YOUR_PIXEL_ID";  // TODO: your Meta Pixel ID
+  var PIXEL_ID   = "1796499848461056";  // Meta Pixel — Wonder Bowl business account
 
   var CONSENT_KEY = "wb_consent";    // localStorage: "granted" | "denied"
   var loaded = false;
