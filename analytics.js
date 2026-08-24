@@ -10,15 +10,19 @@
   "use strict";
 
   /* ---- CONFIG — fill these in ------------------------------------------- */
-  var GA4_ID     = "G-XXXXXXXXXX";   // TODO: your GA4 Measurement ID
+  var GA4_ID     = "G-3XEZX3WE2M";   // GA4 Measurement ID — Wonder Bowl web stream
   var CLARITY_ID = "y64z7ixc68";     // Microsoft Clarity project ID (set)
   var PIXEL_ID   = "1796499848461056";  // Meta Pixel — Wonder Bowl business account
 
   var CONSENT_KEY = "wb_consent";    // localStorage: "granted" | "denied"
   var loaded = false;
 
-  // An ID is "real" once the placeholder Xs / default text are gone.
-  function ready(v) { return !!v && v.indexOf("X") === -1 && v !== "YOUR_PIXEL_ID"; }
+  // An ID is "real" once it is not one of the placeholders we ship with.
+  // Do NOT test for a stray "X": real GA4 measurement ids can contain one
+  // (ours is G-3XEZX3WE2M), and the old indexOf("X") heuristic silently
+  // rejected it, leaving GA4 dead while the config looked filled in.
+  var PLACEHOLDER_IDS = ["G-XXXXXXXXXX", "YOUR_PIXEL_ID"];
+  function ready(v) { return !!v && PLACEHOLDER_IDS.indexOf(v) === -1; }
 
   /* ---- Loaders (run once, only after consent) --------------------------- */
   function loadGA4() {
