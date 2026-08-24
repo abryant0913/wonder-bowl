@@ -287,6 +287,10 @@ p { margin: 0 0 1rem; }
 .story__media { position: relative; }
 .story__photo {
   position: relative;
+  /* Explicit width: the img is absolutely positioned, so it contributes no
+     intrinsic size — without this the frame collapses wherever its parent is
+     sized by fit-content (e.g. the auto-margin mobile layout below). */
+  width: 100%;
   border-radius: var(--radius);
   overflow: hidden;
   background: color-mix(in srgb, var(--purple) 12%, var(--blue));
@@ -653,7 +657,7 @@ p { margin: 0 0 1rem; }
   .hero .wrap { grid-template-columns: 1fr; }
   .hero__media { order: -1; max-width: 440px; margin: 0 auto; }
   .story .wrap { grid-template-columns: 1fr; }
-  .story__media { max-width: 420px; margin: 0 auto; }
+  .story__media { width: 100%; max-width: 420px; margin: 0 auto; }
   .taste-test__grid { grid-template-columns: 1fr; }
   .ingredients { grid-template-columns: 1fr; }
   .ingredients em { grid-column: 2 / -1; text-align: left; }
