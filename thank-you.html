@@ -29,11 +29,24 @@
 
   <script>
     // Fire the completed-purchase event once, after Stripe redirects here.
-    // Stripe Payment Link success URL should be:  /thank-you.html?tier=1cup  (etc.)
+    //
+    // Stripe Payment Link success URL should be:
+    //   https://wonder-bowl.com/thank-you?tier=small&session_id={CHECKOUT_SESSION_ID}
+    //
+    // The session_id matters: GA4 de-duplicates purchases by transaction_id, so
+    // without it every buyer of a given tier shares one id and only the first is
+    // counted. Stripe substitutes {CHECKOUT_SESSION_ID} literally — keep the braces.
     (function () {
       var params = new URLSearchParams(window.location.search);
-      var tier = (params.get("tier") || "").toLowerCase();
+      var raw = (params.get("tier") || "").toLowerCase();
       var sessionId = params.get("session_id") || "";           // appended by Stripe
+      // The Stripe links use small/medium/large; the site's internal ids are
+      // 1cup/2cup/3cup. Accept either so a mismatch can't silently report $0.
+      var ALIAS = {
+        small: "1cup", medium: "2cup", large: "3cup",
+        "1cup": "1cup", "2cup": "2cup", "3cup": "3cup"
+      };
+      var tier = ALIAS[raw] || raw;
       var VALUE = { "1cup": 15, "2cup": 24, "3cup": 33 };
       var value = VALUE[tier] || 0;
 
