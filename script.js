@@ -102,11 +102,31 @@
 
   function param(name) { return (params.get(name) || "").trim(); }
 
+  function lookupVariant(key) {
+    if (VARIANTS[key]) return key;
+    if (ALIASES[key]) return ALIASES[key];
+    return null;
+  }
+
   function resolveVariantKey() {
     var raw = (param("ad") || param("utm_content") || param("utm_campaign") || "").toLowerCase();
     if (!raw) return null;
-    if (VARIANTS[raw]) return raw;
-    if (ALIASES[raw]) return ALIASES[raw];
+
+    // Exact match first — ?ad=leo, utm_content=ethical_nutrition, etc.
+    var exact = lookupVariant(raw);
+    if (exact) return exact;
+
+    // Otherwise match on word parts, so real campaign names carry a prefix
+    // without silently falling back to the default hero. Splitting on
+    // non-alphanumerics (rather than substring matching) keeps short aliases
+    // like "sf" from matching by accident inside an unrelated word.
+    //   test1_ingredients -> ["test1","ingredients"] -> ingredient
+    //   test4_leo         -> ["test4","leo"]         -> leo
+    var parts = raw.split(/[^a-z0-9]+/);
+    for (var i = 0; i < parts.length; i++) {
+      var hit = parts[i] && lookupVariant(parts[i]);
+      if (hit) return hit;
+    }
     return null;
   }
 
