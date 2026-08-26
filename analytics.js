@@ -128,7 +128,34 @@
     b.querySelector(".consent__no").addEventListener("click", deny);
   }
 
+  /* ---- Self-exclusion ---------------------------------------------------
+     Visiting ?wb_optout=1 marks this browser as opted out: no banner, no
+     trackers, nothing recorded. Intended for our own devices so we don't
+     appear in our own analytics.
+
+     Bookmark the opt-out URL and use it as the way you open the site. Safari's
+     ITP evicts localStorage after ~7 days without interaction, which silently
+     expires the choice — re-applying it on every visit is what makes the
+     exclusion durable rather than something you have to remember to redo.
+
+     ?wb_optout=0 clears the choice again (the banner returns on next load),
+     so a device can be put back into measurement if we ever need to.
+  ----------------------------------------------------------------------- */
+  function applyOptOutParam() {
+    var v;
+    try { v = new URLSearchParams(window.location.search).get("wb_optout"); }
+    catch (e) { return false; }
+    if (v === null) return false;
+    if (v === "0" || v === "false") {
+      try { localStorage.removeItem(CONSENT_KEY); } catch (e) {}
+      return false;   // fall through: banner shows again
+    }
+    setConsent("denied");
+    return true;
+  }
+
   function init() {
+    if (applyOptOutParam()) return;   // opted out -> load nothing, show nothing
     var c = getConsent();
     if (c === "granted") loadAll();
     else if (c !== "denied") showBanner();
