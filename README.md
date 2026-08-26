@@ -20,8 +20,24 @@ wonder-bowl/
 ├── script.js       # UTM capture, dynamic hero, parallax, modal, Stripe redirect
 ├── PRD.md          # The Product Requirements Document
 ├── README.md       # This file
+├── backend/        # Google Apps Script sink that records form submissions
 └── assets/         # Brand assets (high-res originals) + web/ (optimized copies)
 ```
+
+### Where submissions go
+
+The sign-up form collects a **name, email and physical address**. Those are POSTed
+to a Google Apps Script web app that appends one row per submission to an orders
+Sheet. Source and deploy instructions: [`backend/apps-script-form-sink.gs`](./backend/apps-script-form-sink.gs).
+
+Set `FORM_ENDPOINT` in `script.js` to the deployed `/exec` URL.
+**While `FORM_ENDPOINT` is empty, submissions are not recorded anywhere** — the
+visitor still sees the success screen and still reaches Stripe, so the gap is
+invisible from the outside. The console logs a loud error in that state.
+
+Submissions are queued in `localStorage` and retried on the next page load if the
+POST fails, and each carries a unique `wb_id` that the Apps Script uses to ignore
+duplicates.
 
 No build step, no framework, no dependencies — plain HTML/CSS/JS. Open it in a
 browser or drop it on any static host (Netlify, Vercel, GitHub Pages, S3, a

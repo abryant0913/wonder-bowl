@@ -21,10 +21,16 @@
      0. CONFIG — swap these when wiring up the real backend / campaign
   --------------------------------------------------------------------------- */
 
-  // TODO: replace with your real endpoint (Formspree, Google Sheet webhook,
-  // Zapier catch-hook, custom API, etc.). Until then the payload is logged to
-  // the console so you can verify UTM capture end-to-end.
-  var FORM_ENDPOINT = ""; // e.g. "https://formspree.io/f/xxxxxxx"
+  // Google Apps Script web-app URL that appends each submission to the orders
+  // Sheet. Source + deploy steps: backend/apps-script-form-sink.gs
+  // Paste the /exec URL here. While it is empty NOTHING IS RECORDED — every
+  // submission is dropped after the success screen shows.
+  var FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbxpH-4TzN1CLIOmrOBDW6wW_b7roLFIAu771j7x9yys_EnzNe5akd6cyDbV_FUQPgdS/exec";
+
+  // Submissions that failed to send are held here and retried on the next page
+  // load, so a network blip or a closed laptop can't silently lose an order.
+  var PENDING_KEY = "wb_pending_submissions";
+  var PENDING_MAX = 25;
 
   // How long (ms) before the modal auto-opens on first visit.
   var TIMED_OPEN_MS = 15000;
@@ -226,9 +232,75 @@
   /* ---------------------------------------------------------------------------
      5. FORM SUBMISSION
   --------------------------------------------------------------------------- */
+  // --- submission transport ------------------------------------------------
+  // POSTs as text/plain on purpose. application/json is not a CORS-"simple"
+  // content type, so it triggers a preflight OPTIONS request — and Apps Script
+  // web apps do not answer OPTIONS, which kills the POST before it is sent.
+  // The body is still JSON; the Apps Script parses it with JSON.parse.
+  //
+  // keepalive lets the request outlive the page: showSuccess() navigates to
+  // Stripe ~1.3s later, and a normal fetch would be cancelled mid-flight —
+  // losing exactly the submissions that convert.
+  function postSubmission(payload) {
+    if (!FORM_ENDPOINT) return Promise.reject(new Error("FORM_ENDPOINT is empty"));
+    return fetch(FORM_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+      keepalive: true
+    }).then(function (res) {
+      if (!res.ok) throw new Error("Request failed: " + res.status);
+      return res;
+    });
+  }
+
+  function newSubmissionId() {
+    return "wb_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 10);
+  }
+
+  function readPending() {
+    try {
+      var raw = localStorage.getItem(PENDING_KEY);
+      var list = raw ? JSON.parse(raw) : [];
+      return Object.prototype.toString.call(list) === "[object Array]" ? list : [];
+    } catch (e) { return []; }
+  }
+
+  function writePending(list) {
+    try { localStorage.setItem(PENDING_KEY, JSON.stringify(list.slice(-PENDING_MAX))); } catch (e) {}
+  }
+
+  function stashPending(payload) {
+    var list = readPending();
+    list.push(payload);
+    writePending(list);
+  }
+
+  function dropPending(id) {
+    writePending(readPending().filter(function (p) { return p && p.wb_id !== id; }));
+  }
+
+  // Retry anything left over from a previous visit. Each payload carries a
+  // stable wb_id and the Apps Script ignores ids it has already written, so a
+  // request that succeeded but whose response was lost to the Stripe redirect
+  // cannot produce a duplicate row.
+  function flushPending() {
+    if (!FORM_ENDPOINT) return;
+    readPending().forEach(function (payload) {
+      if (!payload || !payload.wb_id) return;
+      postSubmission(payload).then(function () {
+        dropPending(payload.wb_id);
+        console.log("[Wonder Bowl] Recovered queued submission:", payload.wb_id);
+      }).catch(function () { /* leave queued for next time */ });
+    });
+  }
+
   var form = document.getElementById("signup-form");
   var errorEl = form.querySelector("[data-form-error]");
 
+  // Retained for validation/edge cases. The submit path deliberately no longer
+  // surfaces transport errors to the visitor: a failed POST is queued and
+  // retried silently rather than blocking their checkout.
   function showError(msg) {
     errorEl.textContent = msg;
     errorEl.hidden = false;
@@ -277,6 +349,7 @@
     }
 
     var payload = collectPayload();
+    payload.wb_id = newSubmissionId();
     var submitBtn = form.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
     submitBtn.textContent = "Sending…";
@@ -285,26 +358,33 @@
     console.log("[Wonder Bowl] Sign-up payload:", payload);
 
     if (!FORM_ENDPOINT) {
-      // No backend wired yet — treat as success for the painted-door test.
+      // Nothing is wired up to receive this. Keep a local copy rather than
+      // dropping it outright, and make the gap loud in the console instead of
+      // showing the visitor a success screen over a black hole.
+      stashPending(payload);
+      console.error(
+        "[Wonder Bowl] FORM_ENDPOINT is empty — this submission was NOT recorded " +
+        "anywhere server-side. Set FORM_ENDPOINT in script.js."
+      );
       showSuccess(payload);
       return;
     }
 
-    fetch(FORM_ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Accept": "application/json" },
-      body: JSON.stringify(payload)
-    })
-      .then(function (res) {
-        if (!res.ok) throw new Error("Request failed: " + res.status);
-        showSuccess(payload);
-      })
-      .catch(function (err) {
-        console.error("[Wonder Bowl] Submission error:", err);
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Send me the Taste Test";
-        showError("Something went wrong sending that. Please try again in a moment.");
-      });
+    // Record and hand off to checkout in parallel. Recording must never gate the
+    // Stripe redirect: a slow or failing sink would otherwise cost a sale, which
+    // is strictly worse than a lead we can still retry.
+    //
+    // Stashed BEFORE the request so that if anything below throws, the payload
+    // is already durable. postSubmission() clears it on a confirmed 2xx.
+    stashPending(payload);
+    postSubmission(payload).then(function () {
+      dropPending(payload.wb_id);
+    }).catch(function (err) {
+      // Stays queued; retried on the visitor's next page load.
+      console.error("[Wonder Bowl] Submission failed, queued for retry:", err);
+    });
+
+    showSuccess(payload);
   });
 
   /* ---------------------------------------------------------------------------
@@ -414,4 +494,5 @@
   initScrollDepth();
   initSectionViews();
   initFormStart();
+  flushPending();   // resend anything a previous visit failed to record
 })();
