@@ -419,6 +419,27 @@ p { margin: 0 0 1rem; }
 .footer__logo { height: 80px; width: auto; margin: 0 auto 1rem; }
 .site-footer p { margin: 0.3rem 0; font-size: 0.96rem; color: color-mix(in srgb, var(--white) 85%, transparent); }
 .site-footer__fine { font-size: 0.84rem; opacity: 0.7; margin-top: 0.7rem; }
+/* Footer brand row: the logo and the Instagram glyph both link to the profile. */
+.footer__brand { display: flex; align-items: center; justify-content: center; gap: 0.9rem; margin: 0 0 1rem; }
+.footer__brand-logo { display: inline-flex; line-height: 0; }
+.footer__brand .footer__logo { margin: 0; }
+.footer__ig {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 12px;
+  color: var(--purple); text-decoration: none;
+  border: 2px solid color-mix(in srgb, var(--purple) 28%, transparent);
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+.footer__ig:hover,
+.footer__ig:focus-visible {
+  background: color-mix(in srgb, var(--purple) 10%, transparent);
+  border-color: color-mix(in srgb, var(--purple) 60%, transparent);
+  transform: translateY(-1px);
+}
+.footer__brand-logo:hover { opacity: 0.85; }
+.footer__ig-glyph { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.9; }
+.footer__ig-glyph .dot { fill: currentColor; stroke: none; }
+@media (prefers-reduced-motion: reduce) { .footer__ig { transition: none; } .footer__ig:hover { transform: none; } }
 .footer__mark { width: 34px; margin: 0 auto 0.4rem; opacity: 0.9; }
 
 /* ---------- Modal ---------- */

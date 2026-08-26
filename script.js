@@ -477,6 +477,21 @@
     });
   }
 
+  // Outbound social links. Tracked so we can tell whether the footer link is
+  // costing us conversions rather than guessing — it is the one element on the
+  // page that deliberately sends people away from the funnel.
+  function initSocialLinks() {
+    var links = document.querySelectorAll("[data-social]");
+    Array.prototype.forEach.call(links, function (a) {
+      a.addEventListener("click", function () {
+        track("social_click", {
+          network: a.getAttribute("data-social") || "",
+          placement: a.getAttribute("data-social-placement") || ""
+        });
+      });
+    });
+  }
+
   /* ---------------------------------------------------------------------------
      9. MISC
   --------------------------------------------------------------------------- */
@@ -494,5 +509,6 @@
   initScrollDepth();
   initSectionViews();
   initFormStart();
+  initSocialLinks();
   flushPending();   // resend anything a previous visit failed to record
 })();
