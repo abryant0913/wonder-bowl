@@ -419,6 +419,13 @@ p { margin: 0 0 1rem; }
 .footer__logo { height: 80px; width: auto; margin: 0 auto 1rem; }
 .site-footer p { margin: 0.3rem 0; font-size: 0.96rem; color: color-mix(in srgb, var(--white) 85%, transparent); }
 .site-footer__fine { font-size: 0.84rem; opacity: 0.7; margin-top: 0.7rem; }
+.site-footer__contact { margin-top: 0.75rem; }
+.site-footer__contact a {
+  color: var(--purple); font-weight: 700; text-decoration: underline;
+  text-underline-offset: 3px; text-decoration-thickness: 2px;
+  transition: opacity 0.18s ease;
+}
+.site-footer__contact a:hover { opacity: 0.7; }
 /* Footer brand row: the logo and the Instagram glyph both link to the profile. */
 .footer__brand { display: flex; align-items: center; justify-content: center; gap: 0.9rem; margin: 0 0 1rem; }
 .footer__brand-logo { display: inline-flex; line-height: 0; }

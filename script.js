@@ -477,17 +477,24 @@
     });
   }
 
-  // Outbound social links. Tracked so we can tell whether the footer link is
-  // costing us conversions rather than guessing — it is the one element on the
-  // page that deliberately sends people away from the funnel.
-  function initSocialLinks() {
-    var links = document.querySelectorAll("[data-social]");
-    Array.prototype.forEach.call(links, function (a) {
+  // Outbound links that leave the funnel — the social profile and the mailto
+  // contacts. Tracked so we can tell whether they cost conversions, and which
+  // address people actually reach for, rather than guessing.
+  function initOutboundLinks() {
+    var social = document.querySelectorAll("[data-social]");
+    Array.prototype.forEach.call(social, function (a) {
       a.addEventListener("click", function () {
         track("social_click", {
           network: a.getAttribute("data-social") || "",
           placement: a.getAttribute("data-social-placement") || ""
         });
+      });
+    });
+
+    var contacts = document.querySelectorAll("[data-contact]");
+    Array.prototype.forEach.call(contacts, function (a) {
+      a.addEventListener("click", function () {
+        track("contact_click", { address: a.getAttribute("data-contact") || "" });
       });
     });
   }
@@ -509,6 +516,6 @@
   initScrollDepth();
   initSectionViews();
   initFormStart();
-  initSocialLinks();
+  initOutboundLinks();
   flushPending();   // resend anything a previous visit failed to record
 })();
