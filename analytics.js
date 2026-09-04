@@ -128,6 +128,22 @@
     try { window.location.reload(); } catch (e) {}
   };
 
+  // Any [data-optout] link becomes the opt-out control. The reload is what
+  // actually stops the trackers already running on this page, so confirm
+  // first — otherwise the click looks like it did nothing.
+  function initOptOutLinks() {
+    document.addEventListener("click", function (e) {
+      var a = e.target && e.target.closest && e.target.closest("[data-optout]");
+      if (!a) return;
+      e.preventDefault();
+      setConsent("denied");
+      a.textContent = "Analytics off \u2014 reloading\u2026";
+      window.setTimeout(function () {
+        try { window.location.reload(); } catch (err) {}
+      }, 900);
+    });
+  }
+
   /* ---- Self-exclusion ---------------------------------------------------
      Visiting ?wb_optout=1 marks this browser as opted out: no banner, no
      trackers, nothing recorded. Intended for our own devices so we don't
@@ -155,6 +171,7 @@
   }
 
   function init() {
+    initOptOutLinks();               // works even for opted-out visitors
     if (applyOptOutParam()) return;                 // this visit carried ?wb_optout=1
     var c = getConsent();
     if (c === "optout" || c === "denied") return;   // opted out: nothing loads
