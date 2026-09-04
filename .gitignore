@@ -3,6 +3,7 @@
 
 # Campaign exports and order data. The orders Sheet carries customer names,
 # emails and delivery addresses, and this repo is public (GitHub Pages).
+# Analysis files belong outside the repo entirely — these patterns are only a
 # safety net in case one is dropped in here by accident.
 *.csv
 *.tsv
