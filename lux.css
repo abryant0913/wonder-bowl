@@ -641,7 +641,7 @@ strong { font-weight: 600; }
    hairline is the same token, but it composites over the fill and stays visible. */
 .nutrition thead th:last-child,
 .nutrition tbody td.nutrition__pct {
-  background: var(--soft);
+  background: color-mix(in srgb, var(--fg) 14%, transparent);
   width: 6.5rem;
   text-align: center;
   padding-left: 0.85rem;
