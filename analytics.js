@@ -60,10 +60,23 @@
     window.fbq("track", "PageView");
   }
 
-  function loadAll() {
-    if (loaded) return;
-    loaded = true;
+  // GA4 is first-party measurement of our own funnel and loads for everyone
+  // except our own opted-out devices. Clarity (session replay) and the Meta
+  // Pixel (shares data with Meta) stay behind an explicit Accept: they carry
+  // materially different privacy exposure and are not what the funnel numbers
+  // depend on. Splitting them is what recovers the ~91% of traffic that used
+  // to go unmeasured simply because nobody clicks a consent banner.
+  var baselineLoaded = false, optionalLoaded = false;
+
+  function loadBaseline() {
+    if (baselineLoaded) return;
+    baselineLoaded = true;
     loadGA4();
+  }
+
+  function loadOptional() {
+    if (optionalLoaded) return;
+    optionalLoaded = true;
     loadClarity();
     loadPixel();
   }
@@ -94,39 +107,26 @@
     }
   };
 
-  // Has the visitor granted consent? (used by pages that fire purchase, etc.)
+  // True when this visitor is being measured. Callers (thank-you.html fires
+  // purchase through it) use this to avoid double-reporting opted-out visits.
   window.wbConsentGranted = function () {
-    try { return localStorage.getItem(CONSENT_KEY) === "granted"; } catch (e) { return false; }
+    try {
+      var c = localStorage.getItem(CONSENT_KEY);
+      return c !== "denied" && c !== "optout";
+    } catch (e) { return true; }
   };
 
   /* ---- Consent banner --------------------------------------------------- */
   function getConsent() { try { return localStorage.getItem(CONSENT_KEY); } catch (e) { return null; } }
   function setConsent(v) { try { localStorage.setItem(CONSENT_KEY, v); } catch (e) {} }
 
-  var bannerEl = null;
-  function hideBanner() { if (bannerEl && bannerEl.parentNode) bannerEl.parentNode.removeChild(bannerEl); bannerEl = null; }
-
-  function grant() { setConsent("granted"); loadAll(); hideBanner(); }
-  function deny()  { setConsent("denied"); hideBanner(); }
-
-  function showBanner() {
-    var b = document.createElement("div");
-    b.className = "consent";
-    b.setAttribute("role", "dialog");
-    b.setAttribute("aria-label", "Cookie and analytics consent");
-    b.innerHTML =
-      '<p class="consent__text">We use cookies and privacy-friendly analytics ' +
-      '(Google Analytics, Microsoft Clarity, Meta Pixel) to see how the site is used ' +
-      'and make it better. Okay with you?</p>' +
-      '<div class="consent__actions">' +
-        '<button class="btn consent__btn consent__no" type="button">Decline</button>' +
-        '<button class="btn consent__btn consent__yes" type="button">Accept</button>' +
-      '</div>';
-    document.body.appendChild(b);
-    bannerEl = b;
-    b.querySelector(".consent__yes").addEventListener("click", grant);
-    b.querySelector(".consent__no").addEventListener("click", deny);
-  }
+  // Visitor-facing opt-out. Wire a footer link to it:
+  //   <a href="#" onclick="wbOptOut();return false">Privacy choices</a>
+  // Reloads so already-loaded trackers stop on the spot rather than at next visit.
+  window.wbOptOut = function () {
+    setConsent("denied");
+    try { window.location.reload(); } catch (e) {}
+  };
 
   /* ---- Self-exclusion ---------------------------------------------------
      Visiting ?wb_optout=1 marks this browser as opted out: no banner, no
@@ -138,8 +138,8 @@
      expires the choice — re-applying it on every visit is what makes the
      exclusion durable rather than something you have to remember to redo.
 
-     ?wb_optout=0 clears the choice again (the banner returns on next load),
-     so a device can be put back into measurement if we ever need to.
+     ?wb_optout=0 clears the choice again, so a device can be put back into
+     measurement if we ever need to.
   ----------------------------------------------------------------------- */
   function applyOptOutParam() {
     var v;
@@ -148,18 +148,18 @@
     if (v === null) return false;
     if (v === "0" || v === "false") {
       try { localStorage.removeItem(CONSENT_KEY); } catch (e) {}
-      return false;   // fall through: banner shows again
+      return false;   // fall through: this device is measured again
     }
-    setConsent("denied");
+    setConsent("optout");
     return true;
   }
 
   function init() {
-    if (applyOptOutParam()) return;   // opted out -> load nothing, show nothing
+    if (applyOptOutParam()) return;                 // this visit carried ?wb_optout=1
     var c = getConsent();
-    if (c === "granted") loadAll();
-    else if (c !== "denied") showBanner();
-    // "denied" -> load nothing, show nothing
+    if (c === "optout" || c === "denied") return;   // opted out: nothing loads
+    loadBaseline();                                 // GA4
+    loadOptional();                                 // Clarity + Meta Pixel
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
