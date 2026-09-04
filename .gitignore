@@ -1,2 +1,11 @@
 .DS_Store
 **/.DS_Store
+
+# Campaign exports and order data. The orders Sheet carries customer names,
+# emails and delivery addresses, and this repo is public (GitHub Pages).
+# safety net in case one is dropped in here by accident.
+*.csv
+*.tsv
+*.xlsx
+campaign-data/
+analysis/

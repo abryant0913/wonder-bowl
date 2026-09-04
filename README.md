@@ -97,7 +97,7 @@ Color-field order, top to bottom:
 | Marquee | yellow | Scrolling 16-super-plant ticker |
 | Story (`#story`) | blue | Leo's story + line-art dog |
 | Recipe (`#recipe`) | green | Classic Wonderbowl 16-super-plant breakdown, trust badges, fun callouts |
-| Taste Test (`#taste-test`) | yellow | 3-Day set: 1 glass bowl (half-full) + 5 eco-paper refills (6 meals) + 50/50 method |
+| Taste Test (`#taste-test`) | yellow | 3-Day set: 1 glass bowl (half-full) + 5 eco-paper refills (6 meals) |
 | Pricing (`#pricing`) | purple | 3 at-cost/retail portion tiers ("Most popular" = 2-Cup) |
 | FAQ (`#faq`) | blue | 7-question accordion |
 | Final CTA | pink | "Get your sample set" + bowl visual |

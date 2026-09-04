@@ -6,21 +6,42 @@
   <title>Wonder Bowl: The Taste Test | Fresh vegetarian dog food, simmered in San Francisco</title>
   <meta name="description" content="San Francisco dogs eat better. Claim an at-cost 3-Day Taste Test from Wonder Bowl: 1 reusable glass bowl + 5 eco-paper refills of our Classic Wonder Bowl recipe: 16 whole super-plants, vet-reviewed, exceeds AAFCO standards. Delivered fresh across SF." />
 
+  <!-- This is an A/B design variant carrying the same copy as "/". Letting a
+       second full copy of the site into the index would split wonder-bowl.com
+       against itself; paid traffic reaches this page by URL, not by search.
+       Remove this line if Lux is ever promoted to the primary design. -->
+  <meta name="robots" content="noindex" />
+
   <link rel="icon" type="image/svg+xml" href="assets/web/favicon.svg" />
+
+  <!-- Remember which design this visitor came through. Stripe's hosted
+       checkout returns everyone to one fixed success URL, so the flag has to
+       survive the round-trip through stripe.com; same-origin localStorage is
+       how thank-you.html knows to answer in Lux rather than the classic look.
+       Set here, at the top of the head, so it is recorded even if the visitor
+       leaves before script.js runs. -->
+  <script>
+    try { localStorage.setItem("wb_design", "lux"); } catch (e) {}
+  </script>
 
   <!-- ============================================================= -->
   <!-- ANALYTICS — GA4 + Microsoft Clarity + Meta Pixel.              -->
-  <!-- Consent-gated: nothing loads until the visitor accepts.        -->
-  <!-- Set GA4_ID and PIXEL_ID in analytics.js before launch.        -->
+  <!-- Shared with the classic site: same file, same consent choice.  -->
+  <!-- GA4 separates the two designs by page path, so no extra        -->
+  <!-- tracking code is needed to read the test.                      -->
   <!-- ============================================================= -->
   <script src="analytics.js"></script>
 
-  <!-- Ohno Blazeface (display) via Adobe Fonts. Agrandir (body) is self-hosted in styles.css. -->
+  <!-- Lust Text (display) + Adelle Sans (text) via Adobe Fonts.
+       Both families must be added to kit nnr5kpw — the same kit that already
+       serves Ohno Blazeface to the classic site. -->
   <link rel="stylesheet" href="https://use.typekit.net/nnr5kpw.css" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="lux.css" />
 </head>
 <body>
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+
+<!-- Ingredient glyphs, used by the 16-plant index below. -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
 <symbol id="ic-seed" viewBox="0 0 24 24"><path d="M12 3c4 5 4 12 0 18C8 15 8 8 12 3Z"/></symbol>
 <symbol id="ic-bean" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="5" transform="rotate(-28 12 12)"/></symbol>
 <symbol id="ic-pea" viewBox="0 0 24 24"><circle cx="7.5" cy="13" r="3.7"/><circle cx="14" cy="9" r="3.7"/><circle cx="15.5" cy="16" r="3.7"/></symbol>
@@ -32,12 +53,12 @@
 <symbol id="ic-leaf" viewBox="0 0 24 24"><path d="M4 20C4 11 11 4 20 4c0 9-7 16-16 16Z"/></symbol>
 <symbol id="ic-flakes" viewBox="0 0 24 24"><rect x="3" y="9" width="5.6" height="5.6" rx="1.6" transform="rotate(12 5.8 11.8)"/><rect x="11" y="4.5" width="5.6" height="5.6" rx="1.6" transform="rotate(-14 13.8 7.3)"/><rect x="12.5" y="13" width="5.6" height="5.6" rx="1.6" transform="rotate(20 15.3 15.8)"/></symbol>
 <symbol id="ic-egg" viewBox="0 0 24 24"><path d="M12 3c4 0 6 6.4 6 10.2a6 6.8 0 0 1-12 0C6 9.4 8 3 12 3Z"/></symbol>
-</defs></svg>
+</svg>
 
   <!-- ===================== HEADER ===================== -->
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Wonder Bowl home">
-      <img class="brand__logo" src="assets/web/logo-white-crop.svg" alt="Wonder Bowl" />
+      <img class="brand__logo" src="assets/web/logo-green-crop.svg" alt="Wonder Bowl" />
     </a>
     <nav class="site-nav" aria-label="Primary">
       <a href="#story">Our Story</a>
@@ -50,8 +71,8 @@
   </header>
 
   <main id="top">
-    <!-- ===================== HERO (purple) ===================== -->
-    <section class="hero field field--green" aria-labelledby="hero-heading">
+    <!-- ===================== HERO (paper) ===================== -->
+    <section class="hero band band--paper" aria-labelledby="hero-heading">
       <div class="wrap">
         <div class="hero__copy">
           <p class="eyebrow" data-eyebrow>Fresh · Vegetarian · San Francisco</p>
@@ -81,8 +102,8 @@
       </div>
     </section>
 
-    <!-- ===================== MARQUEE (yellow) ===================== -->
-    <section class="marquee field field--yellow" aria-hidden="true">
+    <!-- ===================== MARQUEE (blush) ===================== -->
+    <section class="marquee band band--blush" aria-hidden="true">
       <div class="marquee__track">
         <span>Red Lentils</span><span class="dot">•</span><span>Chickpeas</span><span class="dot">•</span>
         <span>Shiitake</span><span class="dot">•</span><span>Carrots</span><span class="dot">•</span>
@@ -99,8 +120,8 @@
       </div>
     </section>
 
-    <!-- ===================== STORY (blue) ===================== -->
-    <section class="story field field--blue" id="story" aria-labelledby="story-heading">
+    <!-- ===================== STORY (paper) ===================== -->
+    <section class="story band band--paper" id="story" aria-labelledby="story-heading">
       <div class="wrap">
         <figure class="story__media">
           <div class="story__photo">
@@ -120,8 +141,8 @@
       </div>
     </section>
 
-    <!-- ===================== RECIPE (green) ===================== -->
-    <section class="recipe field field--green" id="recipe" aria-labelledby="recipe-heading">
+    <!-- ===================== RECIPE (green anchor) ===================== -->
+    <section class="recipe band band--ink" id="recipe" aria-labelledby="recipe-heading">
       <figure class="recipe__photo" aria-hidden="true">
         <img src="assets/web/ingredients-topdown.png" alt="" />
       </figure>
@@ -257,12 +278,12 @@
             </div>
           </div>
         </details>
-        <div class="recipe__beg"><span class="callout callout--pink">He begs for more. The plants are flattered.</span></div>
+        <div class="recipe__beg"><span class="callout">He begs for more. The plants are flattered.</span></div>
       </div>
     </section>
 
-    <!-- ===================== THE 3-DAY TASTE TEST (yellow) ===================== -->
-    <section class="taste-test field field--yellow" id="taste-test" aria-labelledby="tt-heading">
+    <!-- ===================== THE 3-DAY TASTE TEST (paper) ===================== -->
+    <section class="taste-test band band--paper" id="taste-test" aria-labelledby="tt-heading">
       <div class="wrap">
         <div class="taste-test__intro">
           <p class="eyebrow">Built for a gentle transition</p>
@@ -285,12 +306,12 @@
           </article>
         </div>
 
-        <p class="callout callout--purple tt-callout">They'll never tell you their food is boring. We will.</p>
+        <p class="callout tt-callout">They'll never tell you their food is boring. We will.</p>
       </div>
     </section>
 
-    <!-- ===================== LAUNCH PRICING (purple) ===================== -->
-    <section class="pricing field field--purple" id="pricing" aria-labelledby="pricing-heading">
+    <!-- ===================== LAUNCH PRICING (blush) ===================== -->
+    <section class="pricing band band--blush" id="pricing" aria-labelledby="pricing-heading">
       <div class="wrap">
         <div class="pricing__head">
           <p class="eyebrow">Launch pricing</p>
@@ -306,7 +327,7 @@
           <article class="price-card">
             <p class="price-card__tier">1-Cup Bowl</p>
             <p class="price-card__weight">Small Pup · 0–40 lbs</p>
-            <p class="price-card__cost"><span class="price-card__amt">$2.50</span><span class="price-card__unit">: per bowl</span></p>
+            <p class="price-card__cost"><span class="price-card__amt">$2.50</span><span class="price-card__unit">per bowl</span></p>
             <p class="price-card__retail">Post-launch $6.25 / bowl</p>
             <button class="btn btn--primary btn--block" data-open-modal data-preselect="1cup">Reserve this set</button>
           </article>
@@ -314,14 +335,14 @@
             <span class="price-card__flag">Most popular</span>
             <p class="price-card__tier">2-Cup Bowl</p>
             <p class="price-card__weight">Medium Dog · 41–70 lbs</p>
-            <p class="price-card__cost"><span class="price-card__amt">$4.00</span><span class="price-card__unit">: per bowl</span></p>
+            <p class="price-card__cost"><span class="price-card__amt">$4.00</span><span class="price-card__unit">per bowl</span></p>
             <p class="price-card__retail">Post-launch $10.00 / bowl</p>
             <button class="btn btn--primary btn--block" data-open-modal data-preselect="2cup">Reserve this set</button>
           </article>
           <article class="price-card">
             <p class="price-card__tier">3-Cup Bowl</p>
             <p class="price-card__weight">Large Woofer · 71+ lbs</p>
-            <p class="price-card__cost"><span class="price-card__amt">$5.50</span><span class="price-card__unit">: per bowl</span></p>
+            <p class="price-card__cost"><span class="price-card__amt">$5.50</span><span class="price-card__unit">per bowl</span></p>
             <p class="price-card__retail">Post-launch $13.75 / bowl</p>
             <button class="btn btn--primary btn--block" data-open-modal data-preselect="3cup">Reserve this set</button>
           </article>
@@ -330,8 +351,8 @@
       </div>
     </section>
 
-    <!-- ===================== FAQ (blue) ===================== -->
-    <section class="faq field field--blue" id="faq" aria-labelledby="faq-heading">
+    <!-- ===================== FAQ (paper) ===================== -->
+    <section class="faq band band--paper" id="faq" aria-labelledby="faq-heading">
       <div class="wrap">
         <div class="faq__head">
           <p class="eyebrow">Good boys deserve good food</p>
@@ -388,15 +409,11 @@
             <div class="faq__body"><p>We want your dog’s transition to fresh plant meals to be completely worry-free! Because our meals are hand-simmered fresh in local San Francisco kitchens, we cannot accept physical returns of perishable food. However, under our <strong>3-Day Taste Test Guarantee</strong>, if your dog refuses to eat the food during your transition test or if your package arrives damaged, simply email us at help@wonder-bowl.com within 7 days of delivery. We will promptly issue a full refund back to your original payment method—no hard feelings.</p></div>
           </details>
         </div>
-        <figure class="faq__dog" aria-hidden="true">
-          <img src="assets/web/dog-wine-blue-slim.svg" alt="" />
-        </figure>
       </div>
     </section>
 
-    <!-- ===================== FINAL CTA (pink) ===================== -->
-    <section class="final-cta field field--pink" aria-labelledby="cta-heading">
-      <div class="glow glow--1"></div>
+    <!-- ===================== FINAL CTA (green anchor) ===================== -->
+    <section class="final-cta band band--ink" aria-labelledby="cta-heading">
       <div class="wrap">
         <div class="final-cta__inner">
           <h2 id="cta-heading">Get your sample set</h2>
@@ -406,23 +423,20 @@
           </figure>
           <button class="btn btn--primary btn--lg" data-open-modal>Reserve My Sample Set →</button>
           <p class="final-cta__fine">At-cost · SF delivery only · Limited beta batches</p>
-          <span class="dog dog--cta" aria-hidden="true">
-            <img src="assets/web/dog-sunglasses-pink.svg" alt="" />
-          </span>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- ===================== FOOTER (yellow) ===================== -->
-  <footer class="site-footer field field--yellow">
+  <!-- ===================== FOOTER (green) ===================== -->
+  <footer class="site-footer band band--ink">
     <div class="wrap">
       <p class="footer__brand">
         <a class="footer__brand-logo" href="https://www.instagram.com/wonderbowl.sf/"
            target="_blank" rel="noopener noreferrer"
            data-social="instagram" data-social-placement="logo"
            aria-label="Wonder Bowl on Instagram">
-          <img class="footer__logo" src="assets/web/logo-purple.svg" alt="Wonder Bowl" />
+          <img class="footer__logo" src="assets/web/logo-white.svg" alt="Wonder Bowl" />
         </a>
         <a class="footer__ig" href="https://www.instagram.com/wonderbowl.sf/"
            target="_blank" rel="noopener noreferrer"
@@ -555,7 +569,7 @@
       <!-- Success / redirect state -->
       <div class="modal__inner modal__success" data-modal-success-view hidden>
         <div class="success__mark" aria-hidden="true">
-          <img src="assets/WonderBowl_MVP_v05_wonder-bowl_icon.svg" alt="" />
+          <img src="assets/web/icon-green.svg" alt="" />
         </div>
         <h2>One last step. Secure checkout.</h2>
         <p>Thanks, <span data-success-name>friend</span>! We're sending <span data-success-dog>your pup</span>'s

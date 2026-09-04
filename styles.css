@@ -352,6 +352,19 @@ p { margin: 0 0 1rem; }
 .recipe__drop[open] .recipe__chev { transform: rotate(180deg); }
 .recipe__body { padding: 0.5rem 0.2rem 1.2rem; animation: rise 0.4s ease both; }
 .recipe__blurb { max-width: 62ch; font-size: 1.05rem; }
+
+/* The nutrient analysis is secondary to the ingredient breakdown: it drops the
+   card treatment entirely and sets its label in the text face at body scale,
+   so the collapsed page reads as one card followed by a plain link. */
+.recipe__drop--nutrition {
+  background: none;
+  border: 0;
+  border-radius: 0;
+}
+.recipe__drop--nutrition summary {
+  font-family: var(--body); font-weight: 700; font-size: 1rem;
+  letter-spacing: 0.01em;
+}
 .ingredients {
   list-style: none; padding: 0; margin: 1.4rem 0 0;
   display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem 2rem;
@@ -369,13 +382,54 @@ p { margin: 0 0 1rem; }
 .ingredients strong { font-family: var(--display); font-weight: 100; font-size: 1.25rem; letter-spacing: 0.01em; }
 .ingredients em { grid-column: 3; font-style: normal; font-size: 0.92rem; text-align: right; opacity: 0.85; }
 
+/* ---------- AAFCO nutrient table ---------- */
+.recipe__drop + .recipe__drop { margin-top: 1rem; }
+.nutrition__scroll { overflow-x: auto; margin-top: 1.4rem; }
+.nutrition__scroll:focus-visible { outline: 3px solid var(--purple); outline-offset: 4px; }
+.nutrition {
+  width: 100%; min-width: 40rem;
+  border-collapse: collapse;
+  font-size: 0.95rem; text-align: left;
+}
+.nutrition__cap {
+  text-align: left; max-width: 56ch;
+  font-size: 0.88rem; opacity: 0.7; padding-bottom: 1rem;
+}
+.nutrition thead th {
+  font-family: var(--body); font-weight: 800;
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
+  opacity: 0.65; padding: 0 0 0.6rem;
+  border-bottom: 2px solid color-mix(in srgb, var(--purple) 32%, transparent);
+}
+.nutrition tbody th, .nutrition tbody td {
+  padding: 0.55rem 0; vertical-align: baseline;
+  border-bottom: 1px solid color-mix(in srgb, var(--purple) 14%, transparent);
+}
+.nutrition tbody th { font-weight: 500; padding-right: 1.4rem; }
+.nutrition thead th + th, .nutrition tbody td { text-align: right; padding-left: 1.4rem; }
+.nutrition__group th {
+  font-family: var(--display); font-weight: 100; font-size: 1.3rem;
+  color: var(--purple); text-transform: none; letter-spacing: 0; opacity: 1;
+  padding: 1.9rem 0 0.5rem;
+  border-bottom: 2px solid color-mix(in srgb, var(--purple) 32%, transparent);
+}
+.nutrition tbody tr:first-child .nutrition__group th,
+.nutrition tbody tr.nutrition__group:first-child th { padding-top: 0.8rem; }
+.nutrition__val { font-weight: 700; }
+.nutrition__req { opacity: 0.72; }
+.nutrition__lim { opacity: 0.6; }
+.nutrition__val, .nutrition__req, .nutrition__pct {
+  white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.nutrition__pct { font-weight: 700; color: var(--purple); }
+
 /* ---------- Taste Test ---------- */
 .taste-test .wrap { text-align: center; }
 .taste-test__intro { max-width: 60ch; margin: 0 auto; }
 .taste-test h2 { margin-bottom: 1rem; }
 .taste-test__grid {
   margin: 3rem 0 2rem;
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem;
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.4rem;
   text-align: left;
 }
 .tt-card {
@@ -571,8 +625,6 @@ p { margin: 0 0 1rem; }
 .price-card__amt { font-family: var(--display); font-weight: 100; font-size: 2.7rem; color: var(--pink); }
 .price-card__unit { font-size: 0.85rem; opacity: 0.8; }
 .price-card__retail { font-size: 0.85rem; opacity: 0.55; margin: 0.15rem 0 0.7rem; }
-.price-card__total { font-size: 1.02rem; margin: 0 0 1.3rem; }
-.price-card__total s { opacity: 0.5; }
 .price-card .btn { margin-top: auto; }
 .price-card .btn--primary { background: var(--purple); color: var(--white); }
 .price-card .btn--primary:hover { background: var(--pink); }

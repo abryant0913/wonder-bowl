@@ -11,10 +11,32 @@
   <script src="analytics.js"></script>
 
   <link rel="stylesheet" href="https://use.typekit.net/nnr5kpw.css" />
-  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Which design did this buyer come through?
+       Stripe's hosted checkout returns every buyer to one fixed success URL and
+       will not pass our own parameters through it, so the answer has to survive
+       the round-trip through stripe.com. lux.html writes wb_design into
+       localStorage before handing off; same-origin, so it is still here.
+
+       The stylesheet is appended synchronously during head parsing, which keeps
+       it render-blocking exactly like a static <link> — no flash, and only the
+       one that is actually needed gets fetched. No flag, or no JS, or a buyer
+       who paid on another device: the classic look, unchanged. -->
+  <script>
+    (function () {
+      var lux = false;
+      try { lux = localStorage.getItem("wb_design") === "lux"; } catch (e) {}
+      var l = document.createElement("link");
+      l.rel = "stylesheet";
+      l.href = lux ? "lux.css" : "styles.css";
+      document.head.appendChild(l);
+      if (lux) document.documentElement.setAttribute("data-design", "lux");
+    })();
+  </script>
+  <noscript><link rel="stylesheet" href="styles.css" /></noscript>
 </head>
 <body>
-  <section class="field field--pink" style="min-height:100vh;display:grid;place-items:center;text-align:center;">
+  <section class="field field--pink band band--ink lux-thanks" style="min-height:100vh;display:grid;place-items:center;text-align:center;">
     <div class="wrap" style="max-width:640px;">
       <img src="assets/web/logo-white-crop.svg" alt="Wonder Bowl" style="height:60px;width:auto;margin:0 auto 1.5rem;" />
       <h1>Thank you — your bowls are on the way!</h1>
@@ -22,7 +44,7 @@
         We've got your order. We'll email you to confirm your San Francisco delivery day —
         keep an eye out, good things are simmering.
       </p>
-      <a class="btn btn--primary btn--lg" href="index.html">Back to Wonder Bowl</a>
+      <a class="btn btn--primary btn--lg" id="back-link" href="index.html">Back to Wonder Bowl</a>
       <p class="final-cta__fine" style="margin-top:1.25rem;">A mealtime pic + honest feedback is all we ask in return. 🐾</p>
     </div>
   </section>
@@ -67,6 +89,12 @@
         setTimeout(firePurchase, 300);
       }
     })();
+  </script>
+  <script>
+    if (document.documentElement.getAttribute("data-design") === "lux") {
+      var back = document.getElementById("back-link");
+      if (back) back.href = "lux.html";
+    }
   </script>
 </body>
 </html>
