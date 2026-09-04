@@ -594,6 +594,7 @@ strong { font-weight: 600; }
 
 .nutrition thead th {
   padding: 0 0 0.7rem;
+  vertical-align: middle;
   border-bottom: 1px solid var(--rule);
   font-size: 0.68rem;
   font-weight: 600;
@@ -633,6 +634,35 @@ strong { font-weight: 600; }
   font-variant-numeric: tabular-nums;
 }
 .nutrition__pct { font-family: var(--font-display); font-size: 1.02rem; }
+
+/* The comparison column carries a soft fill so the eye finds it first. --soft is
+   the band's own tint token, so this lightens correctly on the ink ground here
+   and would still work if the section were moved to a light band. The row
+   hairline is the same token, but it composites over the fill and stays visible. */
+.nutrition thead th:last-child,
+.nutrition tbody td.nutrition__pct {
+  background: var(--soft);
+  width: 6.5rem;
+  text-align: center;
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+}
+.nutrition thead th:last-child { padding-top: 0.7rem; }
+
+/* Hold the requirement column off the tinted column beside it. Qualified past
+   `.nutrition tbody td` for the same specificity reason noted above. */
+.nutrition thead th:nth-child(3),
+.nutrition tbody td.nutrition__req { padding-right: 1rem; }
+
+/* "In range" replaces the multiple wherever exceeding the floor is not itself
+   good news, so it is set in the text face rather than the display numerals. */
+.nutrition tbody td.nutrition__pct--range {
+  font-family: var(--font-text); font-size: 0.68rem; font-weight: 400;
+  text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.8;
+}
+.nutrition__dm { display: block; font-weight: 400; font-size: 0.74rem; opacity: 0.6; }
+
+
 .callout {
   display: inline-block;
   font-family: var(--font-display);

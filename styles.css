@@ -398,7 +398,7 @@ p { margin: 0 0 1rem; }
 .nutrition thead th {
   font-family: var(--body); font-weight: 800;
   font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em;
-  opacity: 0.65; padding: 0 0 0.6rem;
+  opacity: 0.65; padding: 0 0 0.6rem; vertical-align: middle;
   border-bottom: 2px solid color-mix(in srgb, var(--purple) 32%, transparent);
 }
 .nutrition tbody th, .nutrition tbody td {
@@ -422,6 +422,41 @@ p { margin: 0 0 1rem; }
   white-space: nowrap; font-variant-numeric: tabular-nums;
 }
 .nutrition__pct { font-weight: 700; color: var(--purple); }
+/* The comparison column is the answer the table exists to give, so it carries a
+   tint. Group rows span all four columns, so the band breaks at each heading —
+   that reads as grouping rather than as a broken fill. */
+/* Specificity note: `.nutrition tbody td` (0,1,2) sets the shared right-aligned
+   cell padding, so a bare `.nutrition__pct` (0,1,0) loses to it. Both selectors
+   below are qualified past it — otherwise the tint keeps the wide left padding
+   and zero right padding of the generic cell and the number sits flush right. */
+.nutrition thead th:last-child,
+.nutrition tbody td.nutrition__pct {
+  background: color-mix(in srgb, var(--white) 38%, transparent);
+  width: 6.5rem;
+  text-align: center;
+  padding-left: 0.85rem;
+  padding-right: 0.85rem;
+}
+.nutrition thead th:last-child {
+  padding-top: 0.6rem;
+  border-top-left-radius: 6px; border-top-right-radius: 6px;
+}
+
+/* Hold the requirement column off the tinted column beside it. Qualified past
+   `.nutrition tbody td` for the same specificity reason noted above. */
+.nutrition thead th:nth-child(3),
+.nutrition tbody td.nutrition__req { padding-right: 1rem; }
+
+/* "In range" replaces the multiple wherever exceeding the floor is not itself
+   good news. Set in the text face so it reads as a verdict, not a figure. */
+.nutrition tbody td.nutrition__pct--range {
+  font-family: var(--body); font-weight: 400; font-size: 0.68rem;
+  text-transform: uppercase; letter-spacing: 0.07em;
+}
+/* Dry matter: the figure a reader can compare against a bag in the shop. */
+.nutrition__dm { display: block; font-weight: 400; font-size: 0.82rem; opacity: 0.62; }
+
+
 
 /* ---------- Taste Test ---------- */
 .taste-test .wrap { text-align: center; }
