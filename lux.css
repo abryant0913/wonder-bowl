@@ -465,7 +465,26 @@ strong { font-weight: 600; }
   white-space: nowrap;
 }
 
-.marquee__track .dot { opacity: 0.45; letter-spacing: 0; }
+/* Each ingredient carries its own icon rather than a shared separator, so the
+   two are grouped in one inline-flex item — the track's 1.4rem gap then falls
+   between ingredients, not between a name and its own glyph. */
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85em;
+}
+
+.marquee__ico {
+  width: 1.9em;
+  height: 1.9em;
+  flex: none;
+  /* Both are needed: several sprite symbols draw their detail strokes with
+     stroke="currentColor" (the carrot top, the beet and berry stems, the
+     squash stalk). Setting fill alone leaves those strokes inheriting the
+     ink text colour, so the icons come out two-tone. */
+  color: var(--white);
+  fill: var(--white);
+}
 
 @keyframes lux-marquee {
   from { transform: translateX(0); }
