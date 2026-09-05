@@ -315,7 +315,16 @@ strong { font-weight: 600; }
 }
 .site-nav a:hover { border-bottom-color: var(--ink); }
 
-.header-cta { flex: none; padding: 0.85em 1.5em; font-size: 0.72rem; }
+/* Filled rather than outlined: on the blush bar an outline-only button is
+   dark-green-on-peach at hairline weight and reads as another nav item. A
+   light fill separates it from the bar so it reads as the one thing to click. */
+.header-cta {
+  flex: none;
+  padding: 0.85em 1.5em;
+  font-size: 0.72rem;
+  background: var(--white);
+}
+.header-cta:hover { background: var(--white); opacity: 0.86; }
 
 /* --------------------------------------------------------------------------
    6. HERO
