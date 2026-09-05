@@ -546,6 +546,24 @@ strong { font-weight: 600; }
 }
 .recipe__drop > summary::-webkit-details-marker { display: none; }
 
+/* The ingredient breakdown is the section's main invitation, so it is set in
+   the display face at heading scale rather than as a micro-label. The AAFCO
+   analysis below keeps the small uppercase treatment — that contrast is what
+   makes the two read as primary and secondary instead of two equal rows. */
+.recipe__drop:not(.recipe__drop--nutrition) > summary {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  text-transform: none;
+  padding: 1.9rem 0;
+}
+.recipe__drop:not(.recipe__drop--nutrition) .recipe__chev { font-size: 1.15rem; }
+
+/* At heading scale the row could read as a title rather than a control, so
+   give both summaries an explicit hover state. */
+.recipe__drop > summary:hover { opacity: 0.72; }
+
 .recipe__chev { transition: transform 0.35s var(--ease); font-size: 1rem; }
 .recipe__drop[open] .recipe__chev { transform: rotate(180deg); }
 
