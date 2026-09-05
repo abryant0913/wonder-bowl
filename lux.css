@@ -16,7 +16,7 @@
 
    Type is two Adobe Fonts families, served by the existing kit (nnr5kpw):
      lust-text    display  — headlines, price amounts, italic accents
-     adelle-sans  text     — everything else
+     proxima-nova text     — everything else (adelle-sans is the fallback)
 
    SIGNATURE: the dotted menu leader (.ingredients). The
    page argues that these dogs eat better than most people; menu typography
@@ -41,8 +41,12 @@
   --paper:  #ffffff;
 
   --font-display: "lust-text", "Lust Text", Georgia, "Times New Roman", serif;
-  --font-text:    "adelle-sans", "Adelle Sans", -apple-system, BlinkMacSystemFont,
-                  "Segoe UI", Helvetica, Arial, sans-serif;
+  /* proxima-nova leads; adelle-sans is the live fallback until the Typekit kit
+     (nnr5kpw) actually serves Proxima, so this degrades to the current face
+     rather than to a system font. This file asks for weights 400/500/600 —
+     enable all three in the kit or the browser will synthesise them. */
+  --font-text:    "proxima-nova", "adelle-sans", "Adelle Sans", -apple-system,
+                  BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 
   /* Band defaults — every band overrides these three. Components only ever
      read the variables, so a card works on any ground with no override. */
