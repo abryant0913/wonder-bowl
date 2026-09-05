@@ -10,9 +10,9 @@
    of the three at reduced alpha (hairlines, hovers) — never a new hue.
 
      #ffffff  white       — the page ground
-     #fecdad  beige       — the alternating band, the sticky top bar, and the
+     #ffba9f  peach       — the alternating band, the sticky top bar, and the
                             type on green
-     #255e22  deep green  — type on light grounds, ground for the two anchors
+     #164f12  deep green  — type on light grounds, ground for the two anchors
 
    Type is two Adobe Fonts families, served by the existing kit (nnr5kpw):
      lust-text    display  — headlines, price amounts, italic accents
@@ -27,8 +27,13 @@
    0. TOKENS
    -------------------------------------------------------------------------- */
 :root {
-  --ink:    #255e22;
-  --blush:  #fecdad;
+  /* Channel form first: the rgba() derivations below all read from these,
+     so a palette change is these two lines and nothing else. */
+  --ink-rgb:    22, 79, 18;      /* #164f12 */
+  --blush-rgb:  255, 186, 159;   /* #ffba9f */
+
+  --ink:    rgb(var(--ink-rgb));
+  --blush:  rgb(var(--blush-rgb));
   --white:  #ffffff;
 
   /* The page ground. The sticky top bar deliberately does NOT follow this —
@@ -44,8 +49,8 @@
   --fg:    var(--ink);
   --bg:    var(--paper);
   --knock: var(--white);
-  --rule:  rgba(37, 94, 34, 0.22);
-  --soft:  rgba(37, 94, 34, 0.06);
+  --rule:  rgba(var(--ink-rgb), 0.22);
+  --soft:  rgba(var(--ink-rgb), 0.06);
 
   --wrap:    1180px;
   --gutter:  clamp(1.25rem, 5vw, 3.5rem);
@@ -109,25 +114,55 @@ button, input, select, textarea { font: inherit; color: inherit; }
   --bg: var(--paper);
   --fg: var(--ink);
   --knock: var(--white);
-  --rule: rgba(37, 94, 34, 0.22);
-  --soft: rgba(37, 94, 34, 0.06);
+  --rule: rgba(var(--ink-rgb), 0.22);
+  --soft: rgba(var(--ink-rgb), 0.06);
 }
 
 .band--blush {
   --bg: var(--blush);
   --fg: var(--ink);
   --knock: var(--white);
-  --rule: rgba(37, 94, 34, 0.28);
-  --soft: rgba(37, 94, 34, 0.07);
+  --rule: rgba(var(--ink-rgb), 0.28);
+  --soft: rgba(var(--ink-rgb), 0.07);
 }
 
 .band--ink {
   --bg: var(--ink);
   --fg: var(--blush);
   --knock: var(--ink);
-  --rule: rgba(254, 205, 173, 0.30);
-  --soft: rgba(254, 205, 173, 0.08);
+  --rule: rgba(var(--blush-rgb), 0.30);
+  --soft: rgba(var(--blush-rgb), 0.08);
 }
+
+/* --------------------------------------------------------------------------
+   BAND TEXTURE — the organic-shape artwork from the campaign creatives.
+   One asset per ground: green shapes sit over the ink band, peach over blush,
+   at the same tonal relationship the ads use. The artwork repeats seamlessly
+   left-to-right; vertically it crops shapes rather than continuing them, which
+   at this contrast reads as scatter rather than a seam.
+
+   Applied per section with .band--textured, never globally: the paper bands
+   stay clean so the alternation still means something, and the sticky header
+   stays flat so it reads as chrome rather than content.
+   -------------------------------------------------------------------------- */
+.band--textured::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("assets/web/pattern-green.png");
+  background-size: 34rem auto;
+  background-repeat: repeat;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.band--blush.band--textured::before {
+  background-image: url("assets/web/pattern-peach.png");
+}
+
+/* .band is already position:relative, so the overlay needs the content lifted
+   above it rather than any change to the band itself. */
+.band--textured > * { position: relative; z-index: 1; }
 
 /* --------------------------------------------------------------------------
    3. TYPOGRAPHY
@@ -253,14 +288,14 @@ strong { font-weight: 600; }
   align-items: center;
   gap: clamp(1rem, 4vw, 3rem);
   padding: 1.1rem var(--gutter);
-  background: rgba(254, 205, 173, 0.92);
+  background: rgba(var(--blush-rgb), 0.92);
   backdrop-filter: saturate(150%) blur(12px);
   -webkit-backdrop-filter: saturate(150%) blur(12px);
-  border-bottom: 1px solid rgba(37, 94, 34, 0.14);
+  border-bottom: 1px solid rgba(var(--ink-rgb), 0.14);
 }
 
 .brand { display: inline-flex; flex: none; }
-.brand__logo { height: 30px; width: auto; }
+.brand__logo { height: 45px; width: auto; }
 
 .site-nav {
   display: flex;
@@ -337,6 +372,9 @@ strong { font-weight: 600; }
 }
 
 .hero__reassure li {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
   background: var(--bg);
   font-size: 0.7rem;
   font-weight: 500;
@@ -345,13 +383,23 @@ strong { font-weight: 600; }
   padding: 0.95rem 1.15rem;
 }
 
-/* The ✦ characters are decorative; the hairlines already do that work. */
-.hero__reassure li span[aria-hidden] { display: none; }
+/* Sized in em so the icon tracks the label if the type scale ever moves.
+   Held slightly back in weight so it marks the line without competing. */
+.reassure__ico {
+  width: 1.5em;
+  height: 1.5em;
+  flex: none;
+  fill: currentColor;
+  opacity: 0.7;
+}
 
+/* No overflow clip here. Both images are transparent cutouts, so there are no
+   rectangular corners for a radius to round — the clip did nothing except
+   sever the ingredients as initParallax() lifts them out of the bowl. If a
+   rectangular photo is ever swapped in, clip that image, not this container. */
 .hero__media {
   position: relative;
   margin: 0;
-  overflow: hidden;
   border-radius: var(--radius);
 }
 
@@ -735,7 +783,7 @@ strong { font-weight: 600; }
   --bg: var(--ink);
   --fg: var(--blush);
   --knock: var(--ink);
-  --rule: rgba(254, 205, 173, 0.3);
+  --rule: rgba(var(--blush-rgb), 0.3);
   background: var(--ink);
   color: var(--blush);
   border-color: var(--ink);
@@ -958,7 +1006,7 @@ strong { font-weight: 600; }
 .modal__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(37, 94, 34, 0.55);
+  background: rgba(var(--ink-rgb), 0.55);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
 }
@@ -967,7 +1015,7 @@ strong { font-weight: 600; }
   --bg: var(--paper);
   --fg: var(--ink);
   --knock: var(--white);
-  --rule: rgba(37, 94, 34, 0.22);
+  --rule: rgba(var(--ink-rgb), 0.22);
   position: relative;
   width: min(43rem, 100%);
   max-height: 92vh;
@@ -978,12 +1026,16 @@ strong { font-weight: 600; }
   padding: clamp(1.85rem, 4vw, 3.25rem);
 }
 
+/* The panel scrolls (overflow-y: auto), which clips both axes — so this has to
+   sit fully inside the padding box, not hang off the corner. It clears
+   .modal__close (0.9rem + 2.2rem tall) and the heading column is capped below
+   so the two never collide. */
 .modal__bowl {
   position: absolute;
-  top: -3.25rem;
-  right: -2.5rem;
-  width: 11rem;
-  opacity: 0.16;
+  top: 4.5rem;
+  right: 1.9rem;
+  width: clamp(6.5rem, 16vw, 9rem);
+  opacity: 1;
   pointer-events: none;
 }
 
@@ -1008,7 +1060,11 @@ strong { font-weight: 600; }
 
 .modal__inner { position: relative; }
 
-.modal__panel h2 { margin-bottom: 0.8rem; font-size: clamp(1.75rem, 3.4vw, 2.5rem); }
+.modal__panel h2 {
+  margin-bottom: 0.8rem;
+  font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+  max-width: 22ch;   /* leaves the right column clear for .modal__bowl */
+}
 
 .modal__sub { font-size: 0.97rem; opacity: 0.8; margin-bottom: 2rem; max-width: 46ch; }
 
@@ -1104,7 +1160,7 @@ strong { font-weight: 600; }
   background: var(--ink);
   color: var(--blush);
   border-radius: var(--radius);
-  box-shadow: 0 18px 50px rgba(37, 94, 34, 0.28);
+  box-shadow: 0 18px 50px rgba(var(--ink-rgb), 0.28);
 }
 
 .consent__text { flex: 1 1 20rem; font-size: 0.83rem; line-height: 1.5; margin: 0; opacity: 0.92; }
@@ -1190,6 +1246,10 @@ strong { font-weight: 600; }
 }
 
 @media (max-width: 40rem) {
+  /* Panel is too narrow for a heading column plus artwork. */
+  .modal__bowl { display: none; }
+  .modal__panel h2 { max-width: none; }
+
   :root { --band-y: clamp(3.25rem, 12vw, 5rem); }
 
   .hero__reassure { grid-template-columns: 1fr; }

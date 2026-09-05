@@ -51,6 +51,9 @@
 <symbol id="ic-beet" viewBox="0 0 24 24"><circle cx="11" cy="14.5" r="6"/><path d="M11 20.5c.5 2 1.6 2.7 3 3.1" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M14 9c2-3 4-3.2 6.2-2.2C19.4 9.8 17.2 10.8 14 9Z"/></symbol>
 <symbol id="ic-berry" viewBox="0 0 24 24"><circle cx="12" cy="14" r="6.4"/><path d="M12 8c0-3 2-4.2 4.2-4.4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
 <symbol id="ic-leaf" viewBox="0 0 24 24"><path d="M4 20C4 11 11 4 20 4c0 9-7 16-16 16Z"/></symbol>
+<symbol id="ic-pot" viewBox="0 0 24 24"><path d="M4.2 11.4h15.6v4.4a4.2 4.2 0 0 1-4.2 4.2H8.4a4.2 4.2 0 0 1-4.2-4.2Z"/><path d="M2.4 11.4h19.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M9.4 8.4c0-1.5 1.5-1.7 1.5-3.3M14 8.4c0-1.5 1.5-1.7 1.5-3.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+<symbol id="ic-vet" viewBox="0 0 24 24"><path d="M9.7 2.8h4.6v6.9h6.9v4.6h-6.9v6.9H9.7v-6.9H2.8V9.7h6.9Z"/></symbol>
+<symbol id="ic-check" viewBox="0 0 24 24"><path d="M3.6 12.9 9.1 18.4 20.4 6.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="ic-flakes" viewBox="0 0 24 24"><rect x="3" y="9" width="5.6" height="5.6" rx="1.6" transform="rotate(12 5.8 11.8)"/><rect x="11" y="4.5" width="5.6" height="5.6" rx="1.6" transform="rotate(-14 13.8 7.3)"/><rect x="12.5" y="13" width="5.6" height="5.6" rx="1.6" transform="rotate(20 15.3 15.8)"/></symbol>
 <symbol id="ic-egg" viewBox="0 0 24 24"><path d="M12 3c4 0 6 6.4 6 10.2a6 6.8 0 0 1-12 0C6 9.4 8 3 12 3Z"/></symbol>
 </svg>
@@ -87,10 +90,10 @@
             <a class="btn btn--text" href="#taste-test">How it works →</a>
           </div>
           <ul class="hero__reassure">
-            <li><span aria-hidden="true">✦</span> Slow-Simmered in SF</li>
-            <li><span aria-hidden="true">✦</span> Vet-Reviewed</li>
-            <li><span aria-hidden="true">✦</span> Exceeds AAFCO Standards</li>
-            <li><span aria-hidden="true">✦</span> 100% Vegetarian</li>
+            <li><svg class="reassure__ico" aria-hidden="true"><use href="#ic-pot"/></svg>Slow-Simmered in SF</li>
+            <li><svg class="reassure__ico" aria-hidden="true"><use href="#ic-vet"/></svg>Vet-Reviewed</li>
+            <li><svg class="reassure__ico" aria-hidden="true"><use href="#ic-check"/></svg>Exceeds AAFCO Standards</li>
+            <li><svg class="reassure__ico" aria-hidden="true"><use href="#ic-leaf"/></svg>100% Vegetarian</li>
           </ul>
         </div>
 
@@ -142,7 +145,7 @@
     </section>
 
     <!-- ===================== RECIPE (green anchor) ===================== -->
-    <section class="recipe band band--ink" id="recipe" aria-labelledby="recipe-heading">
+    <section class="recipe band band--ink band--textured" id="recipe" aria-labelledby="recipe-heading">
       <figure class="recipe__photo" aria-hidden="true">
         <img src="assets/web/ingredients-topdown.png" alt="" />
       </figure>
@@ -311,7 +314,7 @@
     </section>
 
     <!-- ===================== LAUNCH PRICING (blush) ===================== -->
-    <section class="pricing band band--blush" id="pricing" aria-labelledby="pricing-heading">
+    <section class="pricing band band--blush band--textured" id="pricing" aria-labelledby="pricing-heading">
       <div class="wrap">
         <div class="pricing__head">
           <p class="eyebrow">Launch pricing</p>
@@ -413,7 +416,7 @@
     </section>
 
     <!-- ===================== FINAL CTA (green anchor) ===================== -->
-    <section class="final-cta band band--ink" aria-labelledby="cta-heading">
+    <section class="final-cta band band--ink band--textured" aria-labelledby="cta-heading">
       <div class="wrap">
         <div class="final-cta__inner">
           <h2 id="cta-heading">Get your sample set</h2>
