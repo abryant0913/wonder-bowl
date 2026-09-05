@@ -798,12 +798,17 @@ strong { font-weight: 600; }
   align-items: stretch;
 }
 
+/* Lifted off the band rather than matching it. background:var(--bg) made these
+   the same blush as the ground they sit on, so only the inverted featured card
+   read as a card at all. Mixing toward white keeps them in the blush family
+   while giving them an edge — and, on the textured pricing band, the lighter
+   fill also masks the pattern behind them, which separates them further. */
 .price-card {
   position: relative;
   display: flex;
   flex-direction: column;
   padding: clamp(1.9rem, 3vw, 2.6rem);
-  background: var(--bg);
+  background: color-mix(in srgb, var(--white) 58%, var(--bg));
   border: 1px solid var(--rule);
   border-radius: var(--radius);
 }
