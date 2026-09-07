@@ -153,7 +153,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("assets/web/pattern-green.png");
+  background-image: url("assets/web/pattern-green.png?v=4");
   background-size: 34rem auto;
   background-repeat: repeat;
   opacity: 0.4;
@@ -161,7 +161,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 .band--blush.band--textured::before {
-  background-image: url("assets/web/pattern-peach.png");
+  background-image: url("assets/web/pattern-peach.png?v=4");
 }
 
 /* .band is already position:relative, so the overlay needs the content lifted
