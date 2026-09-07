@@ -72,12 +72,23 @@
       var VALUE = { "1cup": 15, "2cup": 24, "3cup": 33 };
       var value = VALUE[tier] || 0;
 
+      // Which design the buyer started on. Stripe's round-trip drops every URL
+      // parameter and starts a fresh referrer, so storage is the only thing
+      // that survives it. Without this the purchase event — the one number the
+      // design test exists to compare — is unattributable to an arm.
+      var design = "";
+      try { design = localStorage.getItem("wb_design") || ""; } catch (e) {}
+
+      var backLink = document.getElementById("back-link");
+      if (backLink && design === "lux") backLink.href = "lux.html";
+
       function firePurchase() {
         if (!window.wbTrack || !(window.wbConsentGranted && window.wbConsentGranted())) return;
         window.wbTrack("purchase", {
           currency: "USD",
           value: value,
           tier: tier,
+          design: design,
           transaction_id: sessionId || ("wb_" + tier + "_" + value),
           items: [{ item_id: tier, item_name: tier + " 3-day sample set", price: value, quantity: 1 }]
         });

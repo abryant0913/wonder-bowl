@@ -57,8 +57,12 @@
     try {
       var url = new URL(base);
       if (payload.email) url.searchParams.set("prefilled_email", payload.email);
+      // Stripe allows [A-Za-z0-9_-] up to 200 chars in client_reference_id.
+      // The design leads so a payment is attributable to an arm even when the
+      // narrative tag is missing.
       var ref = payload.ad_variant || payload.utm_content || payload.utm_campaign || "";
-      if (ref) url.searchParams.set("client_reference_id", ref);
+      var cref = (design + (ref ? "_" + ref : "")).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 200);
+      if (cref) url.searchParams.set("client_reference_id", cref);
       return url.toString();
     } catch (e) {
       return base; // fall back to the raw link if URL parsing isn't available
@@ -138,6 +142,20 @@
 
   var variantKey = resolveVariantKey();
 
+  /* ---------------------------------------------------------------------------
+     2b. DESIGN ARM — which look the visitor landed on.
+     Derived from the page rather than a URL parameter so it cannot be lost,
+     mistyped or stripped by a redirect. This is the only thing that separates
+     the two arms of a design test: ad_variant carries the ad NARRATIVE
+     (ingredient/ethical/local/leo), which is deliberately identical across
+     both looks, so it cannot answer "which design won".
+     Persisted because checkout leaves the site: Stripe sends the buyer back to
+     thank-you.html, which has no way to know where they started otherwise.
+  --------------------------------------------------------------------------- */
+  var DESIGN_KEY = "wb_design";
+  var design = /lux/i.test(window.location.pathname) ? "lux" : "classic";
+  try { localStorage.setItem(DESIGN_KEY, design); } catch (e) {}
+
   // Populate hidden form fields with the raw ad-source data.
   function populateHiddenFields() {
     var map = {
@@ -147,6 +165,7 @@
       utm_content: param("utm_content"),
       utm_term: param("utm_term"),
       ad_variant: variantKey || param("ad") || "",
+      design: design,
       landing_url: window.location.href
     };
     Object.keys(map).forEach(function (key) {
@@ -322,7 +341,7 @@
     if (nameEl) nameEl.textContent = (payload.name || "friend").split(" ")[0];
     if (emailEl) emailEl.textContent = payload.email || "you";
     if (dogEl) dogEl.textContent = payload.dog_name || "your pup";
-    track("form_submit", { dog_size: payload.dog_size || "", ad_variant: payload.ad_variant || "" });
+    track("form_submit", { dog_size: payload.dog_size || "", ad_variant: payload.ad_variant || "", design: design });
 
     // Hand off to Stripe hosted checkout for the selected portion tier.
     var checkoutUrl = stripeUrlFor(payload);
@@ -333,7 +352,8 @@
         tier: payload.dog_size || "",
         value: SET_VALUE[payload.dog_size] || 0,
         currency: "USD",
-        ad_variant: payload.ad_variant || ""
+        ad_variant: payload.ad_variant || "",
+        design: design
       });
       window.setTimeout(function () { window.location.href = checkoutUrl; }, 1300);
     }

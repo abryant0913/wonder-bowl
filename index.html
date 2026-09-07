@@ -17,6 +17,15 @@
 
   <!-- Ohno Blazeface (display) via Adobe Fonts. Agrandir (body) is self-hosted in styles.css. -->
   <link rel="stylesheet" href="https://use.typekit.net/nnr5kpw.css" />
+
+  <!-- Mirror of the flag lux.html sets. Written on every classic visit so a
+       stale "lux" from an earlier session cannot follow a classic visitor
+       through checkout and mis-attribute their order to the other arm — or
+       render this page's thank-you in the wrong look. Set here rather than in
+       script.js so it lands even if the visitor leaves before that file runs. -->
+  <script>
+    try { localStorage.setItem("wb_design", "classic"); } catch (e) {}
+  </script>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -528,6 +537,7 @@
           <input type="hidden" name="utm_term"     />
           <input type="hidden" name="ad_variant"   />
           <input type="hidden" name="landing_url"  />
+          <input type="hidden" name="design"      />
 
           <div class="field-row">
             <div class="field-group">
