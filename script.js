@@ -417,11 +417,19 @@
     if (!ing) return;
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+    // The artwork is taller than its figure and deliberately overhangs the top
+    // (ingredients flying out of the bowl). On the two-column desktop hero that
+    // overhang sits in empty space; once the layout stacks, the hero copy is
+    // directly above it, so the rise has to be capped or it climbs into the
+    // text. Paired with the top margin .hero__media gets at the same breakpoint.
+    var stacked = window.matchMedia && window.matchMedia("(max-width: 60rem)").matches;
+    var MAX_RISE = stacked ? 40 : 165;
+
     var ticking = false;
     function update() {
       var y = window.pageYOffset || document.documentElement.scrollTop || 0;
       var p = Math.min(Math.max(y / 620, 0), 1);        // eased over the first ~620px
-      var ty = -(p * 165);                               // rise up to 165px
+      var ty = -(p * MAX_RISE);
       ing.style.transform = "translateX(-50%) translateY(" + ty + "px) scale(" + (1 + p * 0.06) + ")";
       ticking = false;
     }

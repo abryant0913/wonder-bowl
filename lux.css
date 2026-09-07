@@ -328,7 +328,10 @@ strong { font-weight: 600; }
   font-size: 0.72rem;
   background: var(--white);
 }
-.header-cta:hover { background: var(--white); opacity: 0.86; }
+/* No :hover override here. The base .btn:hover inverts to a green fill with
+   knockout text, which is the right affordance and legible against this
+   button's white resting fill. An override that restored only the background
+   left white text on white. */
 
 /* --------------------------------------------------------------------------
    6. HERO
@@ -1290,6 +1293,20 @@ strong { font-weight: 600; }
   .story .wrap,
   .faq .wrap { grid-template-columns: 1fr; }
 
+  /* Once the hero stacks, the copy sits directly above the figure — and the
+     flying-ingredients artwork overhangs the top of that figure by ~0.43x its
+     own width, so it lands on the copy. Two changes, both proportional so they
+     hold at every stacked width:
+       - the artwork is trimmed, which shrinks the overhang faster than it
+         shrinks the artwork (the overhang is a difference of two terms);
+       - a percentage top margin reserves the rest. Percentage margins resolve
+         against the containing block's WIDTH, which is exactly what the
+         overhang scales with, so this tracks automatically.
+     The artwork fills the reserved band, so it reads as composition, not a gap.
+     script.js caps the parallax rise to 62px here for the same reason. */
+  .parallax__ing { width: 76%; }
+  .hero__media { margin-top: 34%; }
+
   .faq__head { position: static; }
 
   .taste-test__grid,
@@ -1308,6 +1325,7 @@ strong { font-weight: 600; }
   :root { --band-y: clamp(3.25rem, 12vw, 5rem); }
 
   .hero__reassure { grid-template-columns: 1fr; }
+
 
   .field-row { grid-template-columns: 1fr; }
 
