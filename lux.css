@@ -1322,3 +1322,13 @@ strong { font-weight: 600; }
 
   .footer__logo { height: 58px; }
 }
+
+/* --------------------------------------------------------------------------
+   A/B PARITY — matches styles.css:777 exactly (480px, not this file's 40rem).
+   Without it the lux arm carries a persistent header CTA on phones that the
+   classic arm does not: a functional difference, not a visual one, on traffic
+   that is entirely mobile. A test of two LOOKS must not also vary CTA count.
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+  .header-cta { display: none; }
+}
