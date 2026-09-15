@@ -26,13 +26,15 @@
   <script>
     try { localStorage.setItem("wb_design", "classic"); } catch (e) {}
   </script>
-  <link rel="stylesheet" href="styles.css?v=4" />
+  <link rel="stylesheet" href="styles.css?v=5" />
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
 <symbol id="ic-seed" viewBox="0 0 24 24"><path d="M12 3c4 5 4 12 0 18C8 15 8 8 12 3Z"/></symbol>
 <symbol id="ic-bean" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="9" ry="5" transform="rotate(-28 12 12)"/></symbol>
 <symbol id="ic-pea" viewBox="0 0 24 24"><circle cx="7.5" cy="13" r="3.7"/><circle cx="14" cy="9" r="3.7"/><circle cx="15.5" cy="16" r="3.7"/></symbol>
+<symbol id="ic-lentils" viewBox="0 0 24 24"><circle cx="12" cy="6.2" r="3.1"/><circle cx="17.02" cy="14.9" r="3.1"/><circle cx="6.98" cy="14.9" r="3.1"/></symbol>
+<symbol id="ic-chia" viewBox="0 0 24 24"><g transform="rotate(180 12 12)"><circle cx="12" cy="6.2" r="3.1"/><circle cx="17.02" cy="14.9" r="3.1"/><circle cx="6.98" cy="14.9" r="3.1"/></g></symbol>
 <symbol id="ic-mushroom" viewBox="0 0 24 24"><path d="M4 12a8 5 0 0 1 16 0Z"/><rect x="9.5" y="12" width="5" height="8" rx="2.2"/></symbol>
 <symbol id="ic-carrot" viewBox="0 0 24 24"><path d="M12 21 8.8 11a4 3 0 0 1 6.4 0Z"/><path d="M12 10V4M12 10 9 6M12 10 15 6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
 <symbol id="ic-squash" viewBox="0 0 24 24"><ellipse cx="12" cy="15" rx="6" ry="6.3"/><ellipse cx="12" cy="8" rx="3.1" ry="4.6"/><path d="M12 4.2V2.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
@@ -93,18 +95,28 @@
     <!-- ===================== MARQUEE (yellow) ===================== -->
     <section class="marquee field field--yellow" aria-hidden="true">
       <div class="marquee__track">
-        <span>Red Lentils</span><span class="dot">•</span><span>Chickpeas</span><span class="dot">•</span>
-        <span>Shiitake</span><span class="dot">•</span><span>Carrots</span><span class="dot">•</span>
-        <span>Butternut Squash</span><span class="dot">•</span><span>Sweet Potato</span><span class="dot">•</span>
-        <span>Cranberries</span><span class="dot">•</span><span>Chia</span><span class="dot">•</span>
-        <span>Pumpkin Seeds</span><span class="dot">•</span><span>Beet</span><span class="dot">•</span>
-        <span>Algae Oil</span><span class="dot">•</span>
-        <span>Red Lentils</span><span class="dot">•</span><span>Chickpeas</span><span class="dot">•</span>
-        <span>Shiitake</span><span class="dot">•</span><span>Carrots</span><span class="dot">•</span>
-        <span>Butternut Squash</span><span class="dot">•</span><span>Sweet Potato</span><span class="dot">•</span>
-        <span>Cranberries</span><span class="dot">•</span><span>Chia</span><span class="dot">•</span>
-        <span>Pumpkin Seeds</span><span class="dot">•</span><span>Beet</span><span class="dot">•</span>
-        <span>Algae Oil</span><span class="dot">•</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-lentils"/></svg>Red Lentils</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-bean"/></svg>Chickpeas</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-mushroom"/></svg>Shiitake</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-carrot"/></svg>Carrots</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-squash"/></svg>Butternut Squash</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-bean"/></svg>Sweet Potato</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-berry"/></svg>Cranberries</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-chia"/></svg>Chia</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-seed"/></svg>Pumpkin Seeds</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-beet"/></svg>Beet</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-seed"/></svg>Algae Oil</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-lentils"/></svg>Red Lentils</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-bean"/></svg>Chickpeas</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-mushroom"/></svg>Shiitake</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-carrot"/></svg>Carrots</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-squash"/></svg>Butternut Squash</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-bean"/></svg>Sweet Potato</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-berry"/></svg>Cranberries</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-chia"/></svg>Chia</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-seed"/></svg>Pumpkin Seeds</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-beet"/></svg>Beet</span>
+        <span class="marquee__item"><svg class="marquee__ico" aria-hidden="true"><use href="#ic-seed"/></svg>Algae Oil</span>
       </div>
     </section>
 
@@ -167,11 +179,13 @@
       </div>
     </section>
 
+    <!-- ===================== INGREDIENT STRIP (divides purple / green) ===================== -->
+    <figure class="ingredient-strip" aria-hidden="true">
+      <img src="assets/web/ingredients-strip.webp" alt="" width="2302" height="760" loading="lazy" decoding="async" />
+    </figure>
+
     <!-- ===================== RECIPE (green) ===================== -->
     <section class="recipe field field--green" id="recipe" aria-labelledby="recipe-heading">
-      <figure class="recipe__photo" aria-hidden="true">
-        <img src="assets/web/ingredients-topdown.png" alt="" />
-      </figure>
       <div class="wrap">
         <div class="recipe__head">
           <p class="eyebrow">Inside the bowl</p>
@@ -196,7 +210,7 @@
               deep-frozen bricks.
             </p>
             <ul class="ingredients">
-              <li><svg class="ing__ico" aria-hidden="true"><use href="#ic-seed"/></svg>
+              <li><svg class="ing__ico" aria-hidden="true"><use href="#ic-lentils"/></svg>
                 <strong>Red Lentils</strong><em>Pure energy from plant protein</em></li>
               <li><svg class="ing__ico" aria-hidden="true"><use href="#ic-bean"/></svg>
                 <strong>Chickpeas</strong><em>Fuller for longer from slow fiber</em></li>
