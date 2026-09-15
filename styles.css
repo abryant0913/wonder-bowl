@@ -274,8 +274,12 @@ p { margin: 0 0 1rem; }
   animation: scroll-x 30s linear infinite;
   padding-left: 1.2rem;
 }
-.marquee .dot { color: var(--pink); }
-.marquee .dot:nth-of-type(even) { color: var(--green); }
+/* Name and icon share one inline-flex item so the track gap falls between
+   ingredients, not between a name and its own icon. */
+.marquee__item { display: inline-flex; align-items: center; gap: 0.4em; }
+/* color and fill both: several symbols draw detail strokes in currentColor
+   (carrot top, beet and berry stems, squash stalk). */
+.marquee__ico { width: 1em; height: 1em; flex: none; color: var(--green); fill: currentColor; }
 
 /* ---------- Story ---------- */
 .story .wrap {
@@ -311,16 +315,10 @@ p { margin: 0 0 1rem; }
 .recipe .wrap { max-width: 960px; }
 .recipe__head { text-align: center; margin-bottom: 2.2rem; }
 .recipe h2 { margin-bottom: 1.4rem; }
-.recipe__photo {
-  position: absolute; z-index: 1; pointer-events: none; margin: 0;
-  top: 7%; right: max(-12px, -2vw); left: auto;
-  width: clamp(150px, 15vw, 210px);
-  aspect-ratio: 5 / 6;
-  border-radius: 18px; overflow: hidden;
-  border: 5px solid var(--white);
-  transform: rotate(-4deg);
-}
-.recipe__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Full-bleed photo band between Pricing (purple) and Recipe (green). The source is
+   pre-cropped wide, so object-fit only trims the edges at extreme widths. */
+.ingredient-strip { margin: 0; height: clamp(110px, 15vw, 230px); overflow: hidden; background: var(--green); }
+.ingredient-strip img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
 .trust-badges { display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; }
 .badge {
   display: inline-flex; align-items: center; gap: 0.45rem;
@@ -771,7 +769,7 @@ p { margin: 0 0 1rem; }
   .taste-test__grid { grid-template-columns: 1fr; }
   .ingredients { grid-template-columns: 1fr; }
   .ingredients em { grid-column: 2 / -1; text-align: left; }
-  .dog, .recipe__photo { display: none; }
+  .dog { display: none; }
   .site-nav { display: none; }
 }
 @media (max-width: 480px) {
