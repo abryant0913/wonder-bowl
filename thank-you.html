@@ -72,6 +72,16 @@
       var VALUE = { "1cup": 15, "2cup": 24, "3cup": 33 };
       var value = VALUE[tier] || 0;
 
+      // Large / recurring orders land here too, from ?order=large&freq=<rhythm>.
+      // Their value is genuinely unknowable at this point: the buyer chose sizes
+      // and pack counts inside Stripe, and the redirect carries no amount. So the
+      // event is sent WITHOUT a value rather than with a fabricated one — a made-up
+      // number would quietly corrupt the revenue the sample tiers report honestly.
+      // Revenue for these orders comes from the Stripe dashboard, keyed by the
+      // client_reference_id that script.js attaches.
+      var isLarge = (params.get("order") || "") === "large";
+      var freq = (params.get("freq") || "").toLowerCase();
+
       // Which design the buyer started on. Stripe's round-trip drops every URL
       // parameter and starts a fresh referrer, so storage is the only thing
       // that survives it. Without this the purchase event — the one number the
@@ -84,10 +94,34 @@
 
       function firePurchase() {
         if (!window.wbTrack || !(window.wbConsentGranted && window.wbConsentGranted())) return;
+
+        if (isLarge) {
+          // tier comes from the link's own redirect (?tier=1cup) — each large-order
+          // Payment Link sells exactly one size, so the size is known here even
+          // though the QUANTITY never is. Still no value: see above.
+          var packs = { once: "6-bowl pack", weekly: "14-bowl weekly pack" };
+          window.wbTrack("purchase", {
+            currency: "USD",
+            order_type: "large",
+            frequency: freq,
+            recurring: freq !== "" && freq !== "once",
+            tier: tier,
+            design: design,
+            transaction_id: sessionId || ("wb_lg_" + freq + "_" + tier + "_" + Date.now()),
+            items: [{
+              item_id: "large_" + freq + (tier ? "_" + tier : ""),
+              item_name: "Wonder Bowl " + (tier || "") + " " + (packs[freq] || "large order"),
+              quantity: 1
+            }]
+          });
+          return;
+        }
+
         window.wbTrack("purchase", {
           currency: "USD",
           value: value,
           tier: tier,
+          order_type: "sample",
           design: design,
           transaction_id: sessionId || ("wb_" + tier + "_" + value),
           items: [{ item_id: tier, item_name: tier + " 3-day sample set", price: value, quantity: 1 }]

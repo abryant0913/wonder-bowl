@@ -69,6 +69,82 @@
     }
   }
 
+  // ---------------------------------------------------------------------------
+  // LARGE / RECURRING ORDERS — one Stripe Payment Link per delivery rhythm.
+  //
+  // A Payment Link's billing interval is baked into its prices, so there is no
+  // way to offer a choice of frequency inside a single link: picking a rhythm IS
+  // picking which link to open.
+  //
+  // There is a SECOND link axis for the same reason in reverse. A Payment Link puts
+  // every one of its line items in the cart at quantity 1 — adjustable_quantity
+  // .minimum of 0 lets a customer remove an item, but nothing can make one start
+  // absent. A single link carrying all three sizes therefore opens at "one of each"
+  // ($180 one-time, $336 weekly), and a one-dog household — nearly all of them —
+  // has to delete two items before paying. So each link sells ONE size, and the
+  // size is chosen in our own form where it costs nothing.
+  //
+  // Bowls sell in PACKS, which is also what enforces the 6-bowl minimum: Stripe has
+  // no cart-level minimum (adjustable_quantity.minimum is per line item), but one
+  // pack is the smallest thing anyone can buy. Pack size is the delivery period,
+  // because a dog eats TWO bowls a day — 14 bowls is exactly one week. Six is the
+  // sample set's own unit ("6 portions across 3 days").
+  //
+  // A bi-weekly rhythm was designed and then cut: a 28-bowl pack is up to 14 days
+  // of food in someone's kitchen, which would have to be frozen — and the FAQ sells
+  // explicitly against "commercial brands that freeze meals for months". The
+  // cheapest option should not be the one that contradicts the core claim.
+  //
+  // Six links: 2 rhythms x 3 sizes. While one is empty its card explains itself
+  // instead of dead-ending, and the lead is still captured first either way.
+  // ---------------------------------------------------------------------------
+  var LARGE_ORDER_LINKS = {
+    once: {                 // 6-bowl packs, one-time
+      "1cup": "https://buy.stripe.com/aFafZg6lS5Wd2PjcsK4Ni05",   // $37.50
+      "2cup": "https://buy.stripe.com/7sY4gydOk0BT2Pj0K24Ni04",   // $60.00
+      "3cup": "https://buy.stripe.com/5kQ00i5hOckB61v3We4Ni03"    // $82.50
+    },
+    weekly: {               // 14-bowl packs, every week (save 20%)
+      "1cup": "https://buy.stripe.com/9B65kC8u084lahLdwO4Ni08",   // $70.00 / wk
+      "2cup": "https://buy.stripe.com/8x23cueSo4S90HbgJ04Ni07",   // $112.00 / wk
+      "3cup": "https://buy.stripe.com/14A6oG5hOactfC58cu4Ni06"    // $154.00 / wk
+    }
+  };
+
+  // What one pack costs. Keep in sync with the Stripe prices above — this is the
+  // analytics value for the hand-off, and the figure the form shows live once a
+  // size is picked, so nobody meets a number for the first time on Stripe.
+  var LARGE_ORDER_PRICE = {
+    once:   { "1cup": 37.50, "2cup": 60.00,  "3cup": 82.50 },
+    weekly: { "1cup": 70.00, "2cup": 112.00, "3cup": 154.00 }
+  };
+
+  var LARGE_ORDER_BOWLS = { once: 6, weekly: 14 };
+
+  function largeOrderUrlFor(freq, size, email) {
+    var byFreq = LARGE_ORDER_LINKS[freq] || {};
+    var base = byFreq[size];
+    if (!base) return "";
+    try {
+      var url = new URL(base);
+      // prefilled_email is the ONLY customer field a Payment Link accepts — name,
+      // phone and address have no URL parameter. That is why the form below is
+      // the system of record for fulfilment, exactly as the sample flow already
+      // works: Stripe is asked for bowls and a card, nothing it would duplicate.
+      if (email) url.searchParams.set("prefilled_email", email);
+      // Mirrors stripeUrlFor(): the design arm leads so a payment is still
+      // attributable when the narrative tag is missing. "lg" marks it a large
+      // order and the rhythm rides along, so Stripe payments map back to the
+      // exact card that was clicked.
+      var ref = variantKey || param("ad") || param("utm_content") || param("utm_campaign") || "";
+      var cref = (design + "_lg_" + freq + "_" + size + (ref ? "_" + ref : "")).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 200);
+      url.searchParams.set("client_reference_id", cref);
+      return url.toString();
+    } catch (e) {
+      return base;
+    }
+  }
+
   /* ---------------------------------------------------------------------------
      1. AD VARIANT MAP — the four Meta ad narratives.
         The hero headline + subcopy + eyebrow swap to match the ad a visitor
@@ -168,9 +244,12 @@
       design: design,
       landing_url: window.location.href
     };
+    // querySelectorAll, not querySelector: there are two forms on the page now
+    // (sample and large order) and each carries its own hidden copy of these.
     Object.keys(map).forEach(function (key) {
-      var input = document.querySelector('input[name="' + key + '"]');
-      if (input) input.value = map[key];
+      document.querySelectorAll('input[name="' + key + '"]').forEach(function (input) {
+        input.value = map[key];
+      });
     });
   }
 
@@ -243,9 +322,214 @@
       if (sessionStorage.getItem(TIMED_SHOWN_KEY)) return;
     } catch (e) { /* storage blocked — still show once this page load */ }
     window.setTimeout(function () {
+      // Never stack on top of the large-order modal — the visitor is mid-decision
+      // there, and two dialogs at once would trap focus in the wrong one.
+      if (orderModalOpen()) return;
       try { sessionStorage.setItem(TIMED_SHOWN_KEY, "1"); } catch (e) {}
       openModal();
     }, TIMED_OPEN_MS);
+  }
+
+  /* ---------------------------------------------------------------------------
+     4b. LARGE / RECURRING ORDER MODAL
+     A rhythm picker, not a form. The visitor chooses one-time or weekly
+     here — the one decision a Payment Link cannot hold — and Stripe
+     collects sizes, quantities, name, email, phone, address and consent.
+     Selecting a card is therefore the only frequency signal we ever get, so it
+     is tracked before the hand-off.
+  --------------------------------------------------------------------------- */
+  var orderModal = document.getElementById("order-modal");
+  var orderLastFocused = null;
+
+  function orderModalOpen() {
+    return !!orderModal && !orderModal.hidden;
+  }
+
+  function openOrderModal(source) {
+    if (!orderModal || !orderModal.hidden) return;
+    orderLastFocused = document.activeElement;
+    orderModal.hidden = false;
+    document.body.style.overflow = "hidden";
+    showOrderStep(1);
+    track("large_order_open", { source: source || "cta", design: design });
+  }
+
+  function closeOrderModal() {
+    if (!orderModal) return;
+    orderModal.hidden = true;
+    document.body.style.overflow = "";
+    var note = orderModal.querySelector("[data-order-note]");
+    if (note) note.hidden = true;
+    // Back to the rhythm picker, so reopening never resumes a half-filled form
+    // against a rhythm the visitor can no longer see.
+    showOrderStep(1);
+    if (orderLastFocused && orderLastFocused.focus) orderLastFocused.focus();
+  }
+
+  var ORDER_LABELS = { once: "Just this once", weekly: "Every week" };
+  var orderFreq = "";   // the rhythm chosen in step 1
+
+  function showOrderStep(n) {
+    if (!orderModal) return;
+    orderModal.querySelectorAll("[data-order-step]").forEach(function (step) {
+      step.hidden = step.getAttribute("data-order-step") !== String(n);
+    });
+    var focusTarget = n === 1
+      ? orderModal.querySelector("[data-order-freq]")
+      : orderModal.querySelector("#o-dog");
+    if (focusTarget) focusTarget.focus();
+  }
+
+  function initLargeOrder() {
+    if (!orderModal) return;
+    var orderForm = document.getElementById("order-form");
+    var orderError = orderModal.querySelector("[data-order-error]");
+
+    document.querySelectorAll("[data-open-order]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        openOrderModal(btn.getAttribute("data-order-source") || "cta");
+      });
+    });
+
+    orderModal.querySelectorAll("[data-close-order]").forEach(function (btn) {
+      btn.addEventListener("click", closeOrderModal);
+    });
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && orderModalOpen()) closeOrderModal();
+    });
+
+    // --- Step 1: the rhythm ---------------------------------------------------
+    orderModal.querySelectorAll("[data-order-freq]").forEach(function (card) {
+      card.addEventListener("click", function () {
+        orderFreq = card.getAttribute("data-order-freq");
+
+        // Fired here, not at submit: this is the only frequency signal that
+        // survives an abandoned form, and the rhythm is what the band is testing.
+        track("large_order_select", {
+          frequency: orderFreq,
+          recurring: orderFreq !== "once",
+          value: (LARGE_ORDER_PRICE[orderFreq] || {})["1cup"] || 0,
+          currency: "USD",
+          ad_variant: variantKey || "",
+          design: design
+        });
+
+        var freqField = orderModal.querySelector("[data-order-freq-field]");
+        if (freqField) freqField.value = orderFreq;
+        var chosen = orderModal.querySelector("[data-order-chosen-label]");
+        if (chosen) chosen.textContent = ORDER_LABELS[orderFreq] || orderFreq;
+
+        if (orderModal.__wbUpdatePackPrice) orderModal.__wbUpdatePackPrice();
+        showOrderStep(2);
+      });
+    });
+
+    orderModal.querySelectorAll("[data-order-back]").forEach(function (btn) {
+      btn.addEventListener("click", function () { showOrderStep(1); });
+    });
+
+    // Show what one pack costs the moment a size is picked. Without this the
+    // first number a visitor sees for their own dog is on Stripe's page, which
+    // is the worst possible place to be surprised by a price.
+    var sizeSelect = document.getElementById("o-size");
+    var priceOut = orderModal.querySelector("[data-order-price]");
+    function updatePackPrice() {
+      if (!priceOut) return;
+      var size = sizeSelect ? sizeSelect.value : "";
+      var price = (LARGE_ORDER_PRICE[orderFreq] || {})[size];
+      if (!size || price === undefined) {
+        priceOut.hidden = true;
+        return;
+      }
+      priceOut.hidden = false;
+      priceOut.innerHTML =
+        "One " + LARGE_ORDER_BOWLS[orderFreq] + "-bowl pack: <strong>$" + price.toFixed(2) + "</strong>" +
+        (orderFreq === "weekly" ? " a week" : "") +
+        ". You'll choose how many at checkout.";
+    }
+    if (sizeSelect) sizeSelect.addEventListener("change", updatePackPrice);
+    orderModal.__wbUpdatePackPrice = updatePackPrice;
+
+    // --- Step 2: who and where ------------------------------------------------
+    if (!orderForm) return;
+    orderForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      if (orderError) orderError.hidden = true;
+
+      if (!orderForm.checkValidity()) {
+        orderForm.reportValidity();
+        return;
+      }
+
+      var payload = {};
+      new FormData(orderForm).forEach(function (v, k) { payload[k] = v; });
+      payload.submitted_at = new Date().toISOString();
+      payload.wb_id = newSubmissionId();
+      payload.order_type = "large";
+      payload.frequency = orderFreq;
+
+      var submitBtn = orderForm.querySelector('button[type="submit"]');
+      if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Taking you to checkout…"; }
+
+      console.log("[Wonder Bowl] Large-order payload:", payload);
+
+      // Recording must never gate the hand-off — same rule as the sample form.
+      // Stashed first so the payload is durable even if anything below throws;
+      // postSubmission() clears it on a confirmed 2xx, and flushPending()
+      // retries on the next visit otherwise.
+      stashPending(payload);
+      if (FORM_ENDPOINT) {
+        postSubmission(payload).then(function () {
+          dropPending(payload.wb_id);
+        }).catch(function (err) {
+          console.error("[Wonder Bowl] Large-order submission failed, queued for retry:", err);
+        });
+      } else {
+        console.error(
+          "[Wonder Bowl] FORM_ENDPOINT is empty — this large order was NOT recorded " +
+          "server-side. Set FORM_ENDPOINT in script.js."
+        );
+      }
+
+      var size = payload.dog_size || "";
+      var packValue = (LARGE_ORDER_PRICE[orderFreq] || {})[size] || 0;
+
+      track("large_order_submit", {
+        frequency: orderFreq,
+        recurring: orderFreq !== "once",
+        tier: size,
+        value: packValue,
+        currency: "USD",
+        design: design
+      });
+
+      var url = largeOrderUrlFor(orderFreq, size, payload.email);
+      if (!url) {
+        // The lead is already captured and queued, so say so plainly rather than
+        // implying the order failed.
+        var note = orderModal.querySelector("[data-order-note]");
+        if (note) note.hidden = false;
+        if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Choose bowls & pay →"; }
+        console.error(
+          "[Wonder Bowl] LARGE_ORDER_LINKS." + orderFreq + "." + size + " is empty — " +
+          "lead captured, but there is no Stripe Payment Link to send this visitor to."
+        );
+        return;
+      }
+
+      // Exact, not a "from" figure: the size is known by now, so this is the real
+      // value of one pack. Quantity still is not — that is chosen on Stripe.
+      track("checkout_redirect", {
+        tier: "large_" + orderFreq + "_" + size,
+        order_type: "large",
+        value: packValue,
+        currency: "USD",
+        ad_variant: variantKey || "",
+        design: design
+      });
+      window.setTimeout(function () { window.location.href = url; }, 900);
+    });
   }
 
   /* ---------------------------------------------------------------------------
@@ -544,6 +828,7 @@
   initScrollDepth();
   initSectionViews();
   initFormStart();
+  initLargeOrder();
   initOutboundLinks();
   flushPending();   // resend anything a previous visit failed to record
 })();

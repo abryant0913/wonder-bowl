@@ -168,9 +168,115 @@ also fires `Lead` (modal open), `CompleteRegistration` (submit), and
 
 ---
 
+## Large & recurring orders
+
+Below the yellow Taste Test sits a purple band ("Go bigger, or go weekly") opening a
+**two-step modal**:
+
+1. **Rhythm** — one-time or weekly. This step exists because a Stripe Payment Link's
+   billing interval is baked into its prices: there is no way to offer a choice of
+   frequency *inside* one link, so picking a rhythm IS picking which link to open.
+   It is also the only frequency signal that survives an abandoned form, so it is
+   tracked on selection.
+2. **Details** — dog's name and age, **portion size**, guardian name, email,
+   **phone**, SF address and the T&C tick. POSTed to the same Apps Script sink as the
+   sample form (same stash-then-send retry rule, so a slow sink never gates
+   checkout), then handed to the matching Payment Link.
+
+### Six links, not two
+
+`LARGE_ORDER_LINKS` is a 2 × 3 map: **rhythm × portion size**, one Payment Link each.
+That is not redundancy — a Payment Link puts *every* one of its line items in the
+cart at quantity 1, and `adjustable_quantity.minimum: 0` only lets a customer
+*remove* an item, never makes one start absent. A single link carrying all three
+sizes therefore opens at "one of each" — **$180 one-time, $336 weekly** — and a
+one-dog household has to delete two items before paying. One size per link means the
+checkout page shows a single line item at the right size, and the only thing left to
+choose is how many packs.
+
+The trade is that a single checkout can't mix sizes. The sample flow can't either
+(it asks for one portion size), so the two flows stay consistent.
+
+Because the size is known at submit, `checkout_redirect` carries the exact pack price
+rather than a "from" figure, and `client_reference_id` becomes
+`<design>_lg_<freq>_<size>_<ad>`.
+
+### Why the form, and not just Stripe
+
+A Payment Link prefills **only** `prefilled_email` — `name`, `phone` and `address`
+have no URL parameter. So this form is the fulfilment record and the Stripe links
+should have address and phone collection turned **off**; otherwise the buyer types
+everything twice. Identical to how the sample flow already works.
+
+### Pricing — one pack per delivery
+
+A dog eats **two bowls a day**, so pack size is the delivery period: 14 bowls is
+exactly a week, 28 exactly a fortnight. One pack = one delivery's worth of food,
+which means a subscriber cannot pick a quantity that runs out mid-cycle.
+
+This is also what enforces the 6-bowl minimum. `adjustable_quantity.minimum` is
+*per line item*, so a minimum of 6 across three sizes would force 6 of **each**
+(18 bowls), not 6 in total — Stripe has no cart-level minimum. Making the pack the
+sellable unit means the smallest possible order is one pack, while mixed sizes
+still work.
+
+| Rhythm | Pack | 1-Cup | 2-Cup | 3-Cup |
+|---|---|---|---|---|
+| One-time | 6 bowls (3 days) | $37.50 | $60.00 | $82.50 |
+| Weekly — save 20% | 14 bowls (7 days) | $70.00 | $112.00 | $154.00 |
+
+Per-bowl pricing stays flat across pack sizes ($6.25 and $5.00 for the 1-Cup): the
+discount comes from the rhythm, not from bulk. In margin terms, one-time is 250%
+of at-cost and weekly 200%.
+
+**A bi-weekly rhythm was designed and then cut.** It priced well (30% off, half the
+delivery trips) but a 28-bowl pack is up to 14 days of food in someone's kitchen,
+which has to be frozen — and the FAQ sells explicitly against *"commercial brands
+that freeze meals for months in distant warehouses."* The cheapest option should not
+be the one that contradicts the core claim. Weekly's 14 bowls is 7 days, which the
+existing storage guidance already covers.
+
+Paste the six links into `LARGE_ORDER_LINKS` in `script.js`. Keep `LARGE_ORDER_PRICE`
+in sync with them — it is both the analytics value and the figure the form shows live
+once a size is picked, so nobody meets a price for the first time on Stripe.
+
+### Consent is collected twice, on purpose
+
+The modal's checkbox records consent **with the lead** in the Sheet, so an abandoned
+checkout still has one. Stripe's `consent_collection[terms_of_service]` records it
+**against the charge**, which is the stronger evidence in a dispute. Requires a
+Terms of Service URL in Stripe → Settings → Public details; `/#legal` works, since
+`openTermsIfHashed()` expands the footer's legal block on that hash.
+
+### Events
+
+`large_order_open` → `large_order_select` (carries `frequency`) → `large_order_submit`
+→ `checkout_redirect` (both carry the exact pack price, since the size is known by
+then). On return, `thank-you.html` reads `?order=large&freq=…&tier=…` and fires
+`purchase` **without a value** — the QUANTITY is chosen inside Stripe and the redirect
+carries no amount, so a fabricated number would corrupt the revenue the sample tiers
+report honestly. Large-order revenue comes from the Stripe dashboard, keyed by
+`client_reference_id` (`<design>_lg_<freq>_<size>_<ad>`).
+
+Each link's redirect must therefore carry its own `freq` AND `tier`:
+
+```
+https://wonder-bowl.com/thank-you.html?order=large&freq=once&tier=2cup&session_id={CHECKOUT_SESSION_ID}
+```
+
+`{CHECKOUT_SESSION_ID}` stays literal — Stripe substitutes it, and GA4 needs it as
+`transaction_id` or every buyer of a rhythm collapses into one purchase.
+
+---
+
 ## Before launch
 
 - [ ] Paste the 3 **Stripe Payment Links** into `STRIPE_LINKS` (`script.js`).
+- [x] Paste the 6 **large-order Payment Links** into `LARGE_ORDER_LINKS` (`script.js`).
+- [ ] Set the **Terms of Service URL** in Stripe → Settings → Public details, then
+      enable *Require customers to accept terms* on all 3 large-order links.
+- [ ] Turn **off** address + phone collection on the large-order links (the modal
+      already captured them — leaving them on makes the buyer type everything twice).
 - [ ] **Authorize the domain on the Adobe Fonts (Typekit) kit** — add
   `wonder-bowl.com` + staging host, or Blazeface falls back to serif.
 - [ ] Set the **Meta Pixel ID** and QA with the Pixel Helper.

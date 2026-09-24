@@ -36,7 +36,7 @@
        Both families must be added to kit nnr5kpw — the same kit that already
        serves Ohno Blazeface to the classic site. -->
   <link rel="stylesheet" href="https://use.typekit.net/nnr5kpw.css" />
-  <link rel="stylesheet" href="lux.css?v=4" />
+  <link rel="stylesheet" href="lux.css?v=10" />
 </head>
 <body>
 
@@ -189,6 +189,16 @@
           </article>
         </div>
         <p class="pricing__fine">Every set is 6 portions across 3 days · At-cost · SF delivery only.</p>
+
+        <!-- Second entry point to the large-order flow. #pricing sits well above
+             the standing-order band, so anyone who stops here never learns the
+             option exists. Note the cards directly above are at-cost SAMPLE
+             prices and a larger order is not at cost — the modal's first step
+             leads with per-bowl pricing so that lands before any commitment. -->
+        <div class="pricing__more">
+          <p class="pricing__more-q">Prefer a larger or weekly order?</p>
+          <button class="btn btn--ghost" data-open-order data-order-source="pricing">Place an Order &rarr;</button>
+        </div>
       </div>
     </section>
 
@@ -358,6 +368,24 @@
         </div>
 
         <p class="callout tt-callout">They'll never tell you their food is boring. We will.</p>
+      </div>
+    </section>
+
+    <!-- ===================== STANDING ORDER (ink) ===================== -->
+    <section class="standing band band--ink" id="standing-order" aria-labelledby="standing-heading">
+      <div class="wrap">
+        <div class="standing__inner">
+          <div class="standing__copy">
+            <p class="eyebrow">Past the taste test</p>
+            <h2 id="standing-heading">Go bigger, or <em>go weekly</em>.</h2>
+            <p class="lede standing__lede">Pup already hooked? Order by the batch &mdash; a one-off haul, or a
+              standing delivery that turns up without you thinking about it.</p>
+          </div>
+          <div class="standing__act">
+            <button class="btn btn--primary btn--lg" data-open-order data-order-source="band">Place an Order &rarr;</button>
+            <p class="standing__fine">From $5.00 per 1-cup bowl &middot; A weekly order saves 20%</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -615,6 +643,138 @@
     </div>
   </div>
 
-  <script src="script.js?v=4"></script>
+
+  <!-- Large / recurring order. A rhythm picker, not a form: the delivery
+       interval is baked into a Stripe Payment Link's prices, so choosing a
+       rhythm IS choosing which link to open. Bowl sizes, quantities and all
+       contact details are collected on Stripe's page. -->
+  <div class="modal" id="order-modal" role="dialog" aria-modal="true" aria-labelledby="order-title" hidden>
+    <div class="modal__overlay" data-close-order></div>
+    <div class="modal__panel modal__panel--order" role="document">
+      <button class="modal__close" data-close-order aria-label="Close">&times;</button>
+
+      <div class="modal__inner" data-order-step="1">
+        <p class="eyebrow">Standing order</p>
+        <h2 id="order-title">How often should we cook?</h2>
+        <p class="modal__sub">Pick a rhythm. You&rsquo;ll choose bowl sizes and how many packs on the next step.</p>
+
+        <div class="freq">
+          <button type="button" class="freq-card" data-order-freq="once">
+            <span class="freq-card__name">Just this once</span>
+            <span class="freq-card__cost"><span class="freq-card__amt">$6.25</span><span class="freq-card__unit">per 1-cup bowl</span></span>
+            <span class="freq-card__note">A 6-bowl pack &mdash; three days, no schedule. From $37.50.</span>
+            <span class="freq-card__go">Choose bowls &rarr;</span>
+          </button>
+
+          <button type="button" class="freq-card freq-card--featured" data-order-freq="weekly">
+            <span class="freq-card__flag">Save 20%</span>
+            <span class="freq-card__name">Every week</span>
+            <span class="freq-card__cost"><span class="freq-card__amt">$5.00</span><span class="freq-card__unit">per 1-cup bowl</span></span>
+            <span class="freq-card__note">A 14-bowl pack &mdash; a full week, every week. From $70.</span>
+            <span class="freq-card__go">Choose bowls &rarr;</span>
+          </button>
+
+        </div>
+
+        <p class="modal__note" data-order-note hidden>
+          Larger orders open in a few days. Email
+          <a href="mailto:hello@wonder-bowl.com">hello@wonder-bowl.com</a> and we&rsquo;ll set yours up by hand.
+        </p>
+
+        <p class="modal__fine">Two bowls a day &middot; Pause or cancel anytime &middot; SF delivery only &middot; Secure checkout via Stripe</p>
+      </div>
+
+      <!-- Step 2. Captured here rather than left to Stripe for two reasons: a
+           lead survives an abandoned checkout, and a Payment Link can only
+           prefill the email anyway — so anything Stripe collected would be
+           typed twice. This form is the fulfilment record; Stripe takes the
+           bowls and the card. -->
+      <div class="modal__inner" data-order-step="2" hidden>
+        <p class="eyebrow">Standing order</p>
+        <h2>Where are we delivering?</h2>
+        <p class="modal__sub">Last step before checkout &mdash; then you just pick bowls and pay.</p>
+
+        <p class="order-chosen">
+          <span class="order-chosen__label">Rhythm</span>
+          <strong data-order-chosen-label>Every week</strong>
+          <button type="button" class="order-chosen__change" data-order-back>Change</button>
+        </p>
+
+        <form id="order-form" novalidate>
+          <input type="hidden" name="utm_source"   />
+          <input type="hidden" name="utm_medium"   />
+          <input type="hidden" name="utm_campaign" />
+          <input type="hidden" name="utm_content"  />
+          <input type="hidden" name="utm_term"     />
+          <input type="hidden" name="ad_variant"   />
+          <input type="hidden" name="landing_url"  />
+          <input type="hidden" name="design"       />
+          <input type="hidden" name="frequency" data-order-freq-field />
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="o-dog">Dog&rsquo;s name</label>
+              <input id="o-dog" name="dog_name" type="text" required placeholder="Leo" />
+            </div>
+            <div class="field-group">
+              <label for="o-age">What&rsquo;s your dog&rsquo;s age?</label>
+              <input id="o-age" name="dog_age" type="text" required placeholder="e.g. 3 years" />
+            </div>
+          </div>
+
+          <!-- Portion size lives here, not on Stripe: each Payment Link sells one
+               size, so this picks WHICH link opens. It also means the checkout
+               page shows a single line item instead of one of every size. -->
+          <div class="field-group">
+            <label for="o-size">Portion size</label>
+            <select id="o-size" name="dog_size" required>
+              <option value="" disabled selected>Choose a portion size&hellip;</option>
+              <option value="1cup">1 Cup &middot; Ideal for Small Pups (0&ndash;40 lbs)</option>
+              <option value="2cup">2 Cups &middot; Ideal for Medium Dogs (41&ndash;70 lbs)</option>
+              <option value="3cup">3 Cups &middot; Ideal for Large Woofers (71+ lbs)</option>
+            </select>
+            <p class="field-hint" data-order-price hidden></p>
+          </div>
+
+          <div class="field-group">
+            <label for="o-name">Your name (human guardian)</label>
+            <input id="o-name" name="name" type="text" autocomplete="name" required placeholder="Jamie Rivera" />
+          </div>
+
+          <div class="field-row">
+            <div class="field-group">
+              <label for="o-email">Email</label>
+              <input id="o-email" name="email" type="email" autocomplete="email" required placeholder="you@email.com" />
+            </div>
+            <div class="field-group">
+              <label for="o-phone">Phone</label>
+              <input id="o-phone" name="phone" type="tel" autocomplete="tel" required placeholder="(415) 555-0132" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label for="o-address">San Francisco delivery address</label>
+            <input id="o-address" name="address" type="text" autocomplete="street-address" required placeholder="123 Valencia St, San Francisco, CA 94103" />
+          </div>
+
+          <!-- Deliberately duplicated with Stripe's own consent_collection: this
+               tick is recorded WITH THE LEAD, so an abandoned checkout still has a
+               consent record; Stripe's is recorded against the charge, which is what
+               matters in a dispute. Don't remove one as "redundant". -->
+          <label class="field-check">
+            <input type="checkbox" name="agree_terms" value="yes" required />
+            <span>I&rsquo;ve read the <a href="#legal" target="_blank" rel="noopener" data-open-terms>terms &amp; conditions</a> before ordering.</span>
+          </label>
+
+          <p class="form-error" data-order-error hidden></p>
+
+          <button type="submit" class="btn btn--primary btn--block">Choose bowls &amp; pay &rarr;</button>
+          <p class="modal__fine">You&rsquo;ll pick bowl sizes and how many packs next &middot; Secure checkout via Stripe</p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js?v=11"></script>
 </body>
 </html>

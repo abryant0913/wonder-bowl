@@ -10,3 +10,7 @@
 *.xlsx
 campaign-data/
 analysis/
+
+# Written by backend/stripe-setup.py — product/price/link IDs from a run.
+# No keys in it, but it is a generated artifact, not source.
+backend/stripe-setup-output.json

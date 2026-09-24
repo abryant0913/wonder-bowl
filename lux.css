@@ -1350,3 +1350,109 @@ strong { font-weight: 600; }
 @media (max-width: 480px) {
   .header-cta { display: none; }
 }
+
+/* --------------------------------------------------------------------------
+   STANDING ORDER (large / recurring)
+   The step up from a sample. On the ink band it reads as a deliberate shift in
+   register rather than a second CTA competing with the closer.
+   -------------------------------------------------------------------------- */
+.standing .wrap { padding-block: clamp(2.8rem, 6vw, 4.6rem); }
+.standing__inner {
+  display: flex; align-items: center; flex-wrap: wrap;
+  justify-content: space-between; gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+.standing__copy { flex: 1 1 24rem; }
+.standing__copy h2 { margin-bottom: 0.55rem; font-size: clamp(1.7rem, 3.2vw, 2.4rem); }
+.standing__lede { margin: 0; max-width: 46ch; }
+.standing__act { flex: 0 1 auto; }
+.standing__fine { font-size: 0.8rem; opacity: 0.72; margin: 0.85rem 0 0; }
+
+/* ---------- Frequency picker (order modal) ---------- */
+/* Wider than the sample modal and with no decorative bowl, so the heading is
+   released from the .modal__panel h2 width cap that keeps clear of it. */
+.modal__panel--order { width: min(44rem, 100%); }
+.modal__panel--order h2 { max-width: none; }
+
+/* Hairline-divided cards: the 1px grid gap IS the rule, so no card owns a
+   border and none of them double up where they meet. */
+.freq {
+  display: grid; gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin: 1.7rem 0 0;
+}
+@media (min-width: 42rem) { .freq { grid-template-columns: repeat(2, 1fr); } }
+.freq-card {
+  display: flex; flex-direction: column; gap: 0.3rem;
+  text-align: left; cursor: pointer;
+  font-family: var(--font-text); font-size: 1rem;
+  color: var(--fg); background: var(--bg);
+  border: 0; border-radius: 0;
+  padding: clamp(1.4rem, 2.4vw, 1.9rem);
+  transition: background 0.25s var(--ease), color 0.25s var(--ease);
+}
+/* Inverting on hover matches .price-card--featured: same footprint, different
+   weight — no lift, no shadow. */
+.freq-card:hover, .freq-card:focus-visible {
+  outline: none; background: var(--ink); color: var(--blush);
+}
+.freq-card--featured { background: var(--ink); color: var(--blush); }
+.freq-card--featured:hover, .freq-card--featured:focus-visible { opacity: 0.88; }
+.freq-card__flag {
+  align-self: flex-start;
+  font-size: 0.66rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  opacity: 0.75; margin-bottom: 0.15rem;
+}
+.freq-card__name { font-family: var(--font-display); font-size: 1.4rem; line-height: 1.12; }
+.freq-card__cost { display: flex; align-items: baseline; gap: 0.4rem; margin-top: 0.25rem; }
+.freq-card__amt { font-family: var(--font-display); font-size: 1.85rem; }
+.freq-card__unit { font-size: 0.78rem; opacity: 0.72; }
+.freq-card__note { font-size: 0.86rem; opacity: 0.75; line-height: 1.45; }
+.freq-card__go {
+  margin-top: auto; padding-top: 0.9rem;
+  font-size: 0.78rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+}
+
+/* Shown only while a rhythm has no Payment Link pasted in yet. */
+.modal__note {
+  border: 1px solid var(--rule);
+  padding: 0.9rem 1.05rem;
+  font-size: 0.88rem; margin: 1.2rem 0 0;
+}
+.modal__note[hidden] { display: none; }
+.modal__note a { color: inherit; font-weight: 600; }
+
+@media (max-width: 60rem) {
+  .standing__inner { flex-direction: column; align-items: flex-start; }
+  .standing__act { width: 100%; }
+}
+
+/* The rhythm chosen in step 1, echoed at the top of step 2. */
+.order-chosen {
+  display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+  padding: 0.8rem 0; margin: 0 0 1.5rem; font-size: 0.95rem;
+}
+.order-chosen__label {
+  font-size: 0.66rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.14em; opacity: 0.6;
+}
+.order-chosen strong { font-family: var(--font-display); font-size: 1.15rem; font-weight: 400; }
+.order-chosen__change {
+  margin-left: auto; background: none; border: 0; cursor: pointer;
+  font-family: var(--font-text); font-size: 0.72rem; font-weight: 600;
+  text-transform: uppercase; letter-spacing: 0.12em;
+  color: inherit; border-bottom: 1px solid var(--rule); padding-bottom: 2px;
+}
+.order-chosen__change:hover { border-bottom-color: currentColor; }
+
+/* Secondary path out of the pricing grid — see styles.css for the rationale. */
+/* Left-aligned, unlike the classic arm: this file's pricing fine print sits on
+   the left margin and centring here would break that column. */
+.pricing__more {
+  margin-top: 2rem; padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+}
+.pricing__more-q { font-size: 0.95rem; opacity: 0.82; margin: 0 0 1rem; max-width: 46ch; }

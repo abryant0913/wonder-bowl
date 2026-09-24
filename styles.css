@@ -702,9 +702,108 @@ p { margin: 0 0 1rem; }
 .legal__body h4:first-child { margin-top: 0; }
 .legal__body p { font-size: 0.8rem; line-height: 1.55; opacity: 0.8; margin: 0 0 0.7rem; }
 
+/* Secondary path out of the pricing grid. Ghost pill, not primary: the three
+   cards keep the emphasis, this offers the step past them. */
+.pricing__more {
+  text-align: center;
+  margin-top: 1.8rem; padding-top: 1.8rem;
+  border-top: 1px solid color-mix(in srgb, var(--white) 22%, transparent);
+}
+.pricing__more-q { font-size: 0.98rem; opacity: 0.9; margin: 0 auto 0.9rem; max-width: 42ch; }
+
+/* ---------- Standing order (large / recurring) ---------- */
+/* A slim band between the yellow Taste Test and the blue FAQ: the step up from
+   a sample, deliberately quieter than the pink final CTA so it reads as a
+   next move rather than a second headline act. */
+.standing .wrap { padding-block: clamp(2.6rem, 5vw, 4.2rem); }
+.standing__inner {
+  display: flex; align-items: center; flex-wrap: wrap;
+  justify-content: space-between; gap: clamp(1.4rem, 4vw, 3.4rem);
+}
+.standing__copy { flex: 1 1 24rem; }
+.standing__copy h2 { font-size: clamp(1.75rem, 3.4vw, 2.6rem); margin-bottom: 0.5rem; }
+.standing__lede { margin: 0; max-width: 46ch; }
+.standing__act { flex: 0 1 auto; text-align: center; }
+.standing__fine { font-size: 0.82rem; opacity: 0.78; margin: 0.7rem 0 0; }
+
+/* ---------- Frequency picker (order modal) ---------- */
+/* The rhythm is the one choice a Stripe Payment Link cannot hold, so it gets
+   the whole modal. Sizes and quantities are chosen on Stripe's page. */
+.modal__panel--order { border-top-color: var(--yellow); }
+@media (min-width: 680px) {
+  /* Override the sample modal's right gutter — no decorative bowl here, and the
+     cards need the full width. Narrower than it was at three rhythms: two cards
+     stretched across 880px read as a layout accident rather than a choice. */
+  .modal__panel--order { width: min(680px, 100%); padding-right: clamp(1.75rem, 4vw, 2.9rem); }
+}
+.freq { display: grid; gap: 0.9rem; margin: 1.5rem 0 0.2rem; }
+@media (min-width: 680px) { .freq { grid-template-columns: repeat(2, 1fr); } }
+.freq-card {
+  position: relative; display: flex; flex-direction: column; gap: 0.25rem;
+  text-align: left; cursor: pointer;
+  font-family: var(--body); color: var(--purple);
+  background: var(--white);
+  border: 2.5px solid color-mix(in srgb, var(--purple) 22%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem 1.1rem 1.05rem;
+  transition: border-color 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease;
+}
+.freq-card:hover, .freq-card:focus-visible {
+  outline: none; border-color: var(--purple);
+  transform: translateY(-3px); box-shadow: var(--shadow-sm);
+}
+.freq-card--featured { border-color: var(--pink); }
+.freq-card__flag {
+  position: absolute; top: -11px; right: 0.85rem;
+  background: var(--pink); color: var(--white);
+  font-weight: 800; font-size: 0.66rem;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 0.26rem 0.62rem; border-radius: 999px; white-space: nowrap;
+}
+.freq-card__name { font-family: var(--display); font-weight: 100; font-size: 1.35rem; line-height: 1.1; }
+.freq-card__cost { display: flex; align-items: baseline; gap: 0.35rem; margin-top: 0.2rem; }
+.freq-card__amt { font-family: var(--display); font-weight: 100; font-size: 1.9rem; color: var(--pink); }
+.freq-card__unit { font-size: 0.74rem; opacity: 0.7; }
+.freq-card__note { font-size: 0.85rem; opacity: 0.75; }
+.freq-card__go { margin-top: auto; padding-top: 0.75rem; font-weight: 800; font-size: 0.85rem; }
+.freq-card:hover .freq-card__go, .freq-card:focus-visible .freq-card__go { color: var(--pink); }
+
+/* The rhythm chosen in step 1, echoed at the top of step 2 so the form is
+   never answered against an invisible choice. */
+.order-chosen {
+  display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;
+  background: color-mix(in srgb, var(--purple) 8%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.95rem; margin: 0 0 1.3rem; font-size: 0.95rem;
+}
+.order-chosen__label {
+  font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+  letter-spacing: 0.1em; opacity: 0.6;
+}
+.order-chosen strong { font-weight: 800; }
+.order-chosen__change {
+  margin-left: auto; background: none; border: none; cursor: pointer;
+  font-family: var(--body); font-size: 0.85rem; font-weight: 800;
+  color: var(--purple); text-decoration: underline; text-underline-offset: 3px;
+}
+.order-chosen__change:hover { color: var(--pink); }
+
+/* Shown only when a rhythm has no Payment Link pasted in yet — a visible
+   fallback so an unconfigured card explains itself instead of dead-ending. */
+.modal__note {
+  background: color-mix(in srgb, var(--yellow) 42%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem; font-size: 0.88rem; margin: 1.1rem 0 0;
+}
+.modal__note[hidden] { display: none; }
+.modal__note a { color: var(--purple); font-weight: 800; text-underline-offset: 2px; }
+
 /* Component responsive */
 @media (max-width: 900px) {
   .pricing__grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+  /* Band stacks: copy over button, both left-aligned with the rest of the page. */
+  .standing__inner { flex-direction: column; align-items: flex-start; }
+  .standing__act { text-align: left; width: 100%; }
   .price-card--featured { transform: none; }
   .hero__sticker { display: none; }
   /* The single-line trust row is ~700px of unbreakable content — it inflates the
