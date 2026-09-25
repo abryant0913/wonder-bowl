@@ -736,6 +736,18 @@
   }
   window.addEventListener("hashchange", openTermsIfHashed);
 
+  // /#order — a shareable link that lands on the band's Place an Order button
+  // and opens the order modal, tracked as source "link". The hash is cleared
+  // once handled, so a refresh doesn't reopen it and the link works again.
+  function openOrderIfHashed() {
+    if (window.location.hash !== "#order") return;
+    var btn = document.querySelector('[data-open-order][data-order-source="band"]');
+    if (btn) { try { btn.scrollIntoView({ block: "center" }); } catch (e) {} }
+    openOrderModal("link");
+    try { history.replaceState(null, "", window.location.pathname + window.location.search); } catch (e) {}
+  }
+  window.addEventListener("hashchange", openOrderIfHashed);
+
   /* ---------------------------------------------------------------------------
      8. FUNNEL INSTRUMENTATION — scroll depth, section views, form start
         Every event flows through track() -> GA4 / Clarity / Meta Pixel.
@@ -829,6 +841,7 @@
   initSectionViews();
   initFormStart();
   initLargeOrder();
+  openOrderIfHashed();
   initOutboundLinks();
   flushPending();   // resend anything a previous visit failed to record
 })();
