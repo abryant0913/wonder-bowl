@@ -250,6 +250,9 @@ Terms of Service URL in Stripe → Settings → Public details; `/#legal` works,
 
 ### Events
 
+Share `https://wonder-bowl.com/#order` to open the order modal directly (it scrolls to
+the band's button first); those opens carry `source: "link"`.
+
 `large_order_open` → `large_order_select` (carries `frequency`) → `large_order_submit`
 → `checkout_redirect` (both carry the exact pack price, since the size is known by
 then). On return, `thank-you.html` reads `?order=large&freq=…&tier=…` and fires
