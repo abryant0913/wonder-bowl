@@ -763,6 +763,32 @@ strong { font-weight: 600; }
 }
 .nutrition__dm { display: block; font-weight: 400; font-size: 0.74rem; opacity: 0.6; }
 
+/* ---------- Ingredient breakdown table ----------
+   Reuses the AAFCO table's rules and overrides only what differs: two of its
+   four columns are prose, so they sit left-aligned and top-aligned, and the
+   tinted verdict column widens from a figure to a sentence with a source. */
+.nutrition--ingredients { min-width: 48rem; }
+.nutrition--ingredients tbody th,
+.nutrition--ingredients tbody td { vertical-align: top; }
+.nutrition--ingredients thead th:nth-child(3),
+.nutrition--ingredients tbody td.ingr__what { text-align: left; }
+.nutrition--ingredients thead th:last-child,
+.nutrition--ingredients tbody td.ingr__vet {
+  width: 40%; text-align: left;
+  padding-left: 1rem; padding-right: 1.25rem;
+  background: color-mix(in srgb, var(--fg) 14%, transparent);
+}
+.ingr__pct { font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* Source links sit under the guidance as a small, underlined attribution
+   rather than superscript numbers, so each claim carries its own evidence. */
+.ingr__src {
+  font-size: 0.78em; color: inherit; opacity: 0.7; white-space: nowrap;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.ingr__src:first-of-type::before { content: ""; display: block; }
+.ingr__src:hover { opacity: 1; }
+.ingr__note { font-size: 0.85rem; opacity: 0.75; margin: 1.2rem 0 0; max-width: 64ch; }
+
 
 .callout {
   display: inline-block;
@@ -1426,6 +1452,7 @@ strong { font-weight: 600; }
 
 @media (max-width: 60rem) {
   .standing__inner { flex-direction: column; align-items: flex-start; }
+  .standing__copy { flex: none; } /* column axis: a 24rem basis would become height */
   .standing__act { width: 100%; }
 }
 

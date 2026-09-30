@@ -36,7 +36,7 @@
        Both families must be added to kit nnr5kpw — the same kit that already
        serves Ohno Blazeface to the classic site. -->
   <link rel="stylesheet" href="https://use.typekit.net/nnr5kpw.css" />
-  <link rel="stylesheet" href="lux.css?v=10" />
+  <link rel="stylesheet" href="lux.css?v=13" />
 </head>
 <body>
 
@@ -56,6 +56,8 @@
 <symbol id="ic-check" viewBox="0 0 24 24"><path d="M3.6 12.9 9.1 18.4 20.4 6.4" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 <symbol id="ic-flakes" viewBox="0 0 24 24"><rect x="3" y="9" width="5.6" height="5.6" rx="1.6" transform="rotate(12 5.8 11.8)"/><rect x="11" y="4.5" width="5.6" height="5.6" rx="1.6" transform="rotate(-14 13.8 7.3)"/><rect x="12.5" y="13" width="5.6" height="5.6" rx="1.6" transform="rotate(20 15.3 15.8)"/></symbol>
 <symbol id="ic-egg" viewBox="0 0 24 24"><path d="M12 3c4 0 6 6.4 6 10.2a6 6.8 0 0 1-12 0C6 9.4 8 3 12 3Z"/></symbol>
+<symbol id="ic-grain" viewBox="0 0 24 24"><path d="M12 22V8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><ellipse cx="12" cy="4.8" rx="2" ry="3.2"/><ellipse cx="9.2" cy="10.4" rx="1.9" ry="3.1" transform="rotate(-35 9.2 10.4)"/><ellipse cx="14.8" cy="10.4" rx="1.9" ry="3.1" transform="rotate(35 14.8 10.4)"/><ellipse cx="9.2" cy="15.8" rx="1.9" ry="3.1" transform="rotate(-35 9.2 15.8)"/><ellipse cx="14.8" cy="15.8" rx="1.9" ry="3.1" transform="rotate(35 14.8 15.8)"/></symbol>
+<symbol id="ic-spark" viewBox="0 0 24 24"><path d="M12 2c.8 5.2 4.8 9.2 10 10-5.2.8-9.2 4.8-10 10-.8-5.2-4.8-9.2-10-10 5.2-.8 9.2-4.8 10-10Z"/></symbol>
 </svg>
 
   <!-- ===================== HEADER ===================== -->
@@ -108,8 +110,10 @@
     <!-- ===================== MARQUEE (blush) ===================== -->
     <section class="marquee band band--blush" aria-hidden="true">
       <div class="marquee__track">
+        <span class="marquee__item">Taurine-Reinforced<svg class="marquee__ico" aria-hidden="true"><use href="#ic-spark"/></svg></span>
         <span class="marquee__item">Red Lentils<svg class="marquee__ico" aria-hidden="true"><use href="#ic-seed"/></svg></span>
         <span class="marquee__item">Chickpeas<svg class="marquee__ico" aria-hidden="true"><use href="#ic-bean"/></svg></span>
+        <span class="marquee__item">Quinoa &amp; Oats<svg class="marquee__ico" aria-hidden="true"><use href="#ic-grain"/></svg></span>
         <span class="marquee__item">Shiitake<svg class="marquee__ico" aria-hidden="true"><use href="#ic-mushroom"/></svg></span>
         <span class="marquee__item">Carrots<svg class="marquee__ico" aria-hidden="true"><use href="#ic-carrot"/></svg></span>
         <span class="marquee__item">Butternut Squash<svg class="marquee__ico" aria-hidden="true"><use href="#ic-squash"/></svg></span>
@@ -119,8 +123,10 @@
         <span class="marquee__item">Pumpkin Seeds<svg class="marquee__ico" aria-hidden="true"><use href="#ic-seed"/></svg></span>
         <span class="marquee__item">Beet<svg class="marquee__ico" aria-hidden="true"><use href="#ic-beet"/></svg></span>
         <span class="marquee__item">Algae Oil<svg class="marquee__ico" aria-hidden="true"><use href="#ic-leaf"/></svg></span>
+        <span class="marquee__item">Taurine-Reinforced<svg class="marquee__ico" aria-hidden="true"><use href="#ic-spark"/></svg></span>
         <span class="marquee__item">Red Lentils<svg class="marquee__ico" aria-hidden="true"><use href="#ic-seed"/></svg></span>
         <span class="marquee__item">Chickpeas<svg class="marquee__ico" aria-hidden="true"><use href="#ic-bean"/></svg></span>
+        <span class="marquee__item">Quinoa &amp; Oats<svg class="marquee__ico" aria-hidden="true"><use href="#ic-grain"/></svg></span>
         <span class="marquee__item">Shiitake<svg class="marquee__ico" aria-hidden="true"><use href="#ic-mushroom"/></svg></span>
         <span class="marquee__item">Carrots<svg class="marquee__ico" aria-hidden="true"><use href="#ic-carrot"/></svg></span>
         <span class="marquee__item">Butternut Squash<svg class="marquee__ico" aria-hidden="true"><use href="#ic-squash"/></svg></span>
@@ -161,7 +167,7 @@
           <p class="eyebrow">Launch pricing</p>
           <h2 id="pricing-heading">Made in the Bay. <em>Devoured in the Bay.</em></h2>
           <p class="lede pricing__lede">
-            During our early local test we're waiving all retail margin. You only pay for raw organic
+            During our early local test we're waiving all retail margin. You only pay for raw
             ingredients, packaging, and local SF prep. In return, all we ask is your honest feedback and
             a photo of your pup at mealtime.
           </p>
@@ -235,6 +241,8 @@
                 <strong>Red Lentils</strong><em>Pure energy from plant protein</em></li>
               <li><svg class="ing__ico" aria-hidden="true"><use href="#ic-bean"/></svg>
                 <strong>Chickpeas</strong><em>Fuller for longer from slow fiber</em></li>
+              <li><svg class="ing__ico" aria-hidden="true"><use href="#ic-grain"/></svg>
+                <strong>Quinoa &amp; Oats</strong><em>Steady energy from whole grains</em></li>
               <li><svg class="ing__ico" aria-hidden="true"><use href="#ic-pea"/></svg>
                 <strong>Peas</strong><em>Lean muscle from green protein</em></li>
               <li><svg class="ing__ico" aria-hidden="true"><use href="#ic-bean"/></svg>
@@ -257,10 +265,8 @@
                 <strong>Nutritional Yeast</strong><em>Daily vitality from B vitamins</em></li>
               <li><svg class="ing__ico" aria-hidden="true"><use href="#ic-egg"/></svg>
                 <strong>Whole Eggs</strong><em>Strong bones from protein &amp; calcium</em></li>
-              <li><svg class="ing__ico" aria-hidden="true"><use href="#ic-leaf"/></svg>
-                <strong>Barley Grass</strong><em>A gentle cleanse from chlorophyll</em></li>
               <li><svg class="ing__ico" aria-hidden="true"><use href="#ic-seed"/></svg>
-                <strong>Organic Algae Oil</strong><em>Sharper mind from fish-free DHA</em></li>
+                <strong>Algae Oil</strong><em>Sharper mind from fish-free DHA</em></li>
               <li><svg class="ing__ico" aria-hidden="true"><use href="#ic-flakes"/></svg>
                 <strong>Essential Nutrients</strong><em>Remaining minerals for a balanced bowl</em></li>
             </ul>
@@ -294,49 +300,124 @@
                 </thead>
                 <tbody>
                   <tr class="nutrition__group"><th colspan="4" scope="colgroup">Macronutrients</th></tr>
-                  <tr><th scope="row">Crude protein</th><td class="nutrition__val">63.8 g <span class="nutrition__dm">24% DM</span></td><td class="nutrition__req">45 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">142%</td></tr>
-                  <tr><th scope="row">Linoleic acid</th><td class="nutrition__val">12.5 g</td><td class="nutrition__req">2.8 g <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Crude fat</th><td class="nutrition__val">45.5 g <span class="nutrition__dm">17% DM</span></td><td class="nutrition__req">13.8 g <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Crude protein</th><td class="nutrition__val">61.7 g <span class="nutrition__dm">23% DM</span></td><td class="nutrition__req">45 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">137%</td></tr>
+                  <tr><th scope="row">Linoleic acid</th><td class="nutrition__val">12.8 g</td><td class="nutrition__req">2.8 g <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Crude fat</th><td class="nutrition__val">46.1 g <span class="nutrition__dm">17% DM</span></td><td class="nutrition__req">13.8 g <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
                   <tr class="nutrition__group"><th colspan="4" scope="colgroup">Amino acids</th></tr>
-                  <tr><th scope="row">Arginine</th><td class="nutrition__val">5.35 g</td><td class="nutrition__req">1.28 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">418%</td></tr>
-                  <tr><th scope="row">Histidine</th><td class="nutrition__val">1.59 g</td><td class="nutrition__req">0.48 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">331%</td></tr>
-                  <tr><th scope="row">Isoleucine</th><td class="nutrition__val">2.67 g</td><td class="nutrition__req">0.95 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">281%</td></tr>
-                  <tr><th scope="row">Leucine</th><td class="nutrition__val">4.48 g</td><td class="nutrition__req">1.7 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">264%</td></tr>
-                  <tr><th scope="row">Lysine</th><td class="nutrition__val">3.8 g</td><td class="nutrition__req">1.58 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">241%</td></tr>
+                  <tr><th scope="row">Arginine</th><td class="nutrition__val">5.15 g</td><td class="nutrition__req">1.28 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">402%</td></tr>
+                  <tr><th scope="row">Histidine</th><td class="nutrition__val">1.51 g</td><td class="nutrition__req">0.48 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">315%</td></tr>
+                  <tr><th scope="row">Isoleucine</th><td class="nutrition__val">2.55 g</td><td class="nutrition__req">0.95 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">268%</td></tr>
+                  <tr><th scope="row">Leucine</th><td class="nutrition__val">4.30 g</td><td class="nutrition__req">1.7 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">253%</td></tr>
+                  <tr><th scope="row">Lysine</th><td class="nutrition__val">3.6 g</td><td class="nutrition__req">1.58 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">228%</td></tr>
                   <tr><th scope="row">Methionine</th><td class="nutrition__val">1.02 g</td><td class="nutrition__req">0.83 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">123%</td></tr>
-                  <tr><th scope="row">Methionine + cystine</th><td class="nutrition__val">1.93 g</td><td class="nutrition__req">1.63 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">118%</td></tr>
-                  <tr><th scope="row">Phenylalanine</th><td class="nutrition__val">3.04 g</td><td class="nutrition__req">1.13 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">269%</td></tr>
-                  <tr><th scope="row">Phenylalanine + tyrosine</th><td class="nutrition__val">4.86 g</td><td class="nutrition__req">1.85 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">263%</td></tr>
-                  <tr><th scope="row">Threonine</th><td class="nutrition__val">2.28 g</td><td class="nutrition__req">1.2 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">190%</td></tr>
-                  <tr><th scope="row">Tryptophan</th><td class="nutrition__val">0.733 g</td><td class="nutrition__req">0.4 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">183%</td></tr>
-                  <tr><th scope="row">Valine</th><td class="nutrition__val">3.12 g</td><td class="nutrition__req">1.23 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">254%</td></tr>
+                  <tr><th scope="row">Methionine + cystine</th><td class="nutrition__val">1.94 g</td><td class="nutrition__req">1.63 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">119%</td></tr>
+                  <tr><th scope="row">Phenylalanine</th><td class="nutrition__val">2.92 g</td><td class="nutrition__req">1.13 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">258%</td></tr>
+                  <tr><th scope="row">Phenylalanine + tyrosine</th><td class="nutrition__val">4.67 g</td><td class="nutrition__req">1.85 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">252%</td></tr>
+                  <tr><th scope="row">Threonine</th><td class="nutrition__val">2.18 g</td><td class="nutrition__req">1.2 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">182%</td></tr>
+                  <tr><th scope="row">Tryptophan</th><td class="nutrition__val">0.722 g</td><td class="nutrition__req">0.4 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">180%</td></tr>
+                  <tr><th scope="row">Valine</th><td class="nutrition__val">3.00 g</td><td class="nutrition__req">1.23 g <span class="nutrition__lim">min</span></td><td class="nutrition__pct">244%</td></tr>
                   <tr class="nutrition__group"><th colspan="4" scope="colgroup">Minerals</th></tr>
                   <tr><th scope="row">Calcium</th><td class="nutrition__val">1.7 g</td><td class="nutrition__req">1.25&ndash;6.25 g</td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Phosphorus</th><td class="nutrition__val">1.32 g</td><td class="nutrition__req">1&ndash;4 g</td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Potassium</th><td class="nutrition__val">2.57 g</td><td class="nutrition__req">1.5 g <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Sodium</th><td class="nutrition__val">0.285 g</td><td class="nutrition__req">0.2 g <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Magnesium</th><td class="nutrition__val">0.453 g</td><td class="nutrition__req">0.15 g <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Iron</th><td class="nutrition__val">16.4 mg</td><td class="nutrition__req">10 mg <span class="nutrition__lim">min</span></td><td class="nutrition__pct">164%</td></tr>
-                  <tr><th scope="row">Copper</th><td class="nutrition__val">2.79 mg</td><td class="nutrition__req">1.83 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Manganese</th><td class="nutrition__val">5.23 mg</td><td class="nutrition__req">1.25 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Zinc</th><td class="nutrition__val">30.6 mg</td><td class="nutrition__req">20 mg <span class="nutrition__lim">min</span></td><td class="nutrition__pct">153%</td></tr>
-                  <tr><th scope="row">Iodine</th><td class="nutrition__val">0.295 mg</td><td class="nutrition__req">0.25&ndash;2.75 mg</td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Selenium</th><td class="nutrition__val">0.097 mg</td><td class="nutrition__req">0.08&ndash;0.5 mg</td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Phosphorus</th><td class="nutrition__val">1.34 g</td><td class="nutrition__req">1&ndash;4 g</td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Potassium</th><td class="nutrition__val">2.52 g</td><td class="nutrition__req">1.5 g <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Sodium</th><td class="nutrition__val">0.393 g</td><td class="nutrition__req">0.2 g <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Magnesium</th><td class="nutrition__val">0.471 g</td><td class="nutrition__req">0.15 g <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Iron</th><td class="nutrition__val">15.8 mg</td><td class="nutrition__req">10 mg <span class="nutrition__lim">min</span></td><td class="nutrition__pct">158%</td></tr>
+                  <tr><th scope="row">Copper</th><td class="nutrition__val">2.63 mg</td><td class="nutrition__req">1.83 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Manganese</th><td class="nutrition__val">5.45 mg</td><td class="nutrition__req">1.25 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Zinc</th><td class="nutrition__val">30.4 mg</td><td class="nutrition__req">20 mg <span class="nutrition__lim">min</span></td><td class="nutrition__pct">152%</td></tr>
+                  <tr><th scope="row">Iodine</th><td class="nutrition__val">0.298 mg</td><td class="nutrition__req">0.25&ndash;2.75 mg</td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Selenium</th><td class="nutrition__val">0.101 mg</td><td class="nutrition__req">0.08&ndash;0.5 mg</td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
                   <tr class="nutrition__group"><th colspan="4" scope="colgroup">Vitamins</th></tr>
-                  <tr><th scope="row">Vitamin A</th><td class="nutrition__val">2,782 IU</td><td class="nutrition__req">1,250&ndash;62,500 IU</td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Vitamin D</th><td class="nutrition__val">177.6 IU</td><td class="nutrition__req">125&ndash;750 IU</td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Vitamin E</th><td class="nutrition__val">15.3 IU</td><td class="nutrition__req">12.5 IU <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Thiamine (B1)</th><td class="nutrition__val">4.99 mg</td><td class="nutrition__req">0.56 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Riboflavin (B2)</th><td class="nutrition__val">4.28 mg</td><td class="nutrition__req">1.3 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Niacin (B3)</th><td class="nutrition__val">25.3 mg</td><td class="nutrition__req">3.4 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Pantothenic acid (B5)</th><td class="nutrition__val">8.62 mg</td><td class="nutrition__req">3 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Vitamin A</th><td class="nutrition__val">2,763 IU</td><td class="nutrition__req">1,250&ndash;62,500 IU</td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Vitamin D</th><td class="nutrition__val">158.0 IU</td><td class="nutrition__req">125&ndash;750 IU</td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Vitamin E</th><td class="nutrition__val">15.5 IU</td><td class="nutrition__req">12.5 IU <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Thiamine (B1)</th><td class="nutrition__val">4.96 mg</td><td class="nutrition__req">0.56 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Riboflavin (B2)</th><td class="nutrition__val">4.29 mg</td><td class="nutrition__req">1.3 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Niacin (B3)</th><td class="nutrition__val">25.2 mg</td><td class="nutrition__req">3.4 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Pantothenic acid (B5)</th><td class="nutrition__val">8.71 mg</td><td class="nutrition__req">3 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
                   <tr><th scope="row">Pyridoxine (B6)</th><td class="nutrition__val">3.8 mg</td><td class="nutrition__req">0.38 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
-                  <tr><th scope="row">Folic acid</th><td class="nutrition__val">0.974 mg</td><td class="nutrition__req">0.054 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Folic acid</th><td class="nutrition__val">0.950 mg</td><td class="nutrition__req">0.054 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
                   <tr><th scope="row">Vitamin B12</th><td class="nutrition__val">0.028 mg</td><td class="nutrition__req">0.007 mg <span class="nutrition__lim">min</span></td><td class="nutrition__pct">400%</td></tr>
-                  <tr><th scope="row">Choline</th><td class="nutrition__val">565 mg</td><td class="nutrition__req">340 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
+                  <tr><th scope="row">Choline</th><td class="nutrition__val">555 mg</td><td class="nutrition__req">340 mg <span class="nutrition__lim">min &middot; no max</span></td><td class="nutrition__pct nutrition__pct--range">In range</td></tr>
                 </tbody>
               </table>
             </div>
+          </div>
+        </details>
+        <details class="recipe__drop recipe__drop--nutrition recipe__drop--ingredients">
+          <summary>
+            <span>See every ingredient, quantity, and vet guidance</span>
+            <span class="recipe__chev" aria-hidden="true">&#9662;</span>
+          </summary>
+          <div class="recipe__body">
+            <p class="recipe__blurb">
+              All 39 ingredients in the Classic Wonder Bowl, by share of the finished food, with what each
+              one brings to the bowl and what veterinary sources say about it.
+            </p>
+            <div class="nutrition__scroll" tabindex="0" role="region"
+                 aria-labelledby="ingr-cap">
+              <table class="nutrition nutrition--ingredients">
+                <caption id="ingr-cap" class="nutrition__cap">
+                  The Classic Wonder Bowl, ingredient by ingredient, in order of weight
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Ingredient</th>
+                    <th scope="col">% of food</th>
+                    <th scope="col">What it brings</th>
+                    <th scope="col">Vet guidance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><th scope="row">Water (for simmering)</th><td class="ingr__pct">48.0%</td><td class="ingr__what">Slow-simmering liquid, absorbed by the pulses and grains, that helps keep your dog hydrated</td><td class="ingr__vet">Moist food (over 65% water) counts toward daily water needs; fresh drinking water should always be available too <a class="ingr__src" href="https://ovcpetnutrition.uoguelph.ca/2023/07/03/beat-the-heat-your-guide-to-pet-hydration" target="_blank" rel="noopener">University of Guelph Pet Nutrition</a></td></tr>
+                  <tr><th scope="row">Whole eggs</th><td class="ingr__pct">9.1%</td><td class="ingr__what">Complete protein, choline and natural vitamin A</td><td class="ingr__vet">Fully cooked and plain: protein, healthy fats, vitamins and minerals <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-eggs/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Chickpeas</th><td class="ingr__pct">4.7%</td><td class="ingr__what">Protein and slow-digesting fiber</td><td class="ingr__vet">Rich in protein when cooked thoroughly until soft <a class="ingr__src" href="https://www.petmd.com/dog/nutrition/can-dogs-eat-chickpeas" target="_blank" rel="noopener">PetMD</a></td></tr>
+                  <tr><th scope="row">Sweet potato</th><td class="ingr__pct">4.5%</td><td class="ingr__what">Beta-carotene and slow-release carbs</td><td class="ingr__vet">Cooked and peeled, an excellent source of fiber and vitamins <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-sweet-potatoes/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Red lentils</th><td class="ingr__pct">4.1%</td><td class="ingr__what">Plant protein, iron and folate</td><td class="ingr__vet">A good source of protein, fiber and potassium <a class="ingr__src" href="https://articles.hepper.com/can-dogs-eat-lentils/" target="_blank" rel="noopener">Hepper, vet-reviewed</a></td></tr>
+                  <tr><th scope="row">Quinoa</th><td class="ingr__pct">4.1%</td><td class="ingr__what">Whole grain with complete plant protein</td><td class="ingr__vet">Rinsed and cooked for easy digestion <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-quinoa/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Green split peas</th><td class="ingr__pct">3.0%</td><td class="ingr__what">Protein and fiber</td><td class="ingr__vet">Pack plenty of protein and fiber when cooked plain <a class="ingr__src" href="https://www.petmd.com/dog/nutrition/can-dogs-eat-peas" target="_blank" rel="noopener">PetMD</a></td></tr>
+                  <tr><th scope="row">Pumpkin seeds</th><td class="ingr__pct">2.0%</td><td class="ingr__what">Zinc and magnesium, ground for better absorption</td><td class="ingr__vet">Rich in zinc, magnesium and healthy fats; ground unsalted for easy digestion <a class="ingr__src" href="https://www.preventivevet.com/pets/safe-and-unsafe-nuts-and-seeds-for-pets" target="_blank" rel="noopener">Preventive Vet</a></td></tr>
+                  <tr><th scope="row">Carrots</th><td class="ingr__pct">2.0%</td><td class="ingr__what">Beta-carotene for vitamin A</td><td class="ingr__vet">Low-calorie, with vitamin A, potassium and fiber <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-carrots/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Butternut squash</th><td class="ingr__pct">2.0%</td><td class="ingr__what">Beta-carotene and gentle fiber</td><td class="ingr__vet">Among the best squashes for dogs, peeled, seeded and cooked <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-squash/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Zucchini</th><td class="ingr__pct">2.0%</td><td class="ingr__what">Low-calorie volume and potassium</td><td class="ingr__vet">A healthy, low-calorie vegetable, cooked and plain <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-zucchini/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Rolled oats</th><td class="ingr__pct">1.9%</td><td class="ingr__what">Whole grain with soluble fiber</td><td class="ingr__vet">Cooked plain, a good source of soluble fiber <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-oatmeal/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Beets</th><td class="ingr__pct">1.8%</td><td class="ingr__what">Folate, fiber and deep color</td><td class="ingr__vet">A source of fiber, folate and vitamin C <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-beets/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Sunflower seeds, unsalted</th><td class="ingr__pct">1.6%</td><td class="ingr__what">Vitamin E and linoleic acid</td><td class="ingr__vet">Shelled and unsalted, a source of vitamin E and healthy fats <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-sunflower-seeds/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Red bell pepper</th><td class="ingr__pct">1.6%</td><td class="ingr__what">Vitamin C and carotenoids</td><td class="ingr__vet">Red peppers carry the most vitamins and antioxidants <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-bell-peppers/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Dried shiitake mushrooms</th><td class="ingr__pct">1.0%</td><td class="ingr__what">Savory depth and B vitamins</td><td class="ingr__vet">Store-bought culinary mushrooms add savory flavor and nutrients <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-mushrooms/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Spinach</th><td class="ingr__pct">1.0%</td><td class="ingr__what">Iron, folate and vitamin K</td><td class="ingr__vet">A source of vitamins A, B, C and K <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-spinach/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Peanuts, unsalted</th><td class="ingr__pct">0.61%</td><td class="ingr__what">Healthy fats and niacin</td><td class="ingr__vet">Plain and unsalted, a source of healthy fats, protein and niacin <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-peanuts/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Nutritional yeast (B12-fortified)</th><td class="ingr__pct">0.61%</td><td class="ingr__what">B vitamins, including B12</td><td class="ingr__vet">Supplies B12, which unfortified plant foods essentially lack <a class="ingr__src" href="https://www.merckvetmanual.com/management-and-nutrition/nutrition-small-animals/nutritional-requirements-of-small-animals" target="_blank" rel="noopener">Merck Veterinary Manual</a></td></tr>
+                  <tr><th scope="row">UV-exposed mushrooms</th><td class="ingr__pct">0.61%</td><td class="ingr__what">A natural bonus source of vitamin D</td><td class="ingr__vet">Store-bought culinary mushrooms are a dog-friendly ingredient <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-mushrooms/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Canola oil</th><td class="ingr__pct">0.41%</td><td class="ingr__what">Omega-6 and plant omega-3 (ALA)</td><td class="ingr__vet">A plant oil that supplies essential fatty acids <a class="ingr__src" href="https://articles.hepper.com/can-dogs-eat-canola-oil/" target="_blank" rel="noopener">Hepper, vet-reviewed</a></td></tr>
+                  <tr><th scope="row">Algae oil (EPA + DHA)</th><td class="ingr__pct">0.41%</td><td class="ingr__what">Fish-free omega-3s EPA and DHA</td><td class="ingr__vet">One of the best dietary sources of EPA and DHA, dosed to NRC guidelines <a class="ingr__src" href="https://www.merckvetmanual.com/management-and-nutrition/nutrition-small-animals/nutritional-requirements-of-small-animals" target="_blank" rel="noopener">Merck Veterinary Manual</a> &middot; <a class="ingr__src" href="https://todaysveterinarypractice.com/nutrition/fish-oil-dosing-in-pet-diets-and-supplements/" target="_blank" rel="noopener">Today&rsquo;s Veterinary Practice</a></td></tr>
+                  <tr><th scope="row">Eggshell powder</th><td class="ingr__pct">0.41%</td><td class="ingr__what">Calcium to balance phosphorus</td><td class="ingr__vet">Rich in calcium when cooked and finely ground <a class="ingr__src" href="https://www.petmd.com/dog/nutrition/can-dogs-eat-eggs" target="_blank" rel="noopener">PetMD</a></td></tr>
+                  <tr><th scope="row">Chia seeds</th><td class="ingr__pct">0.30%</td><td class="ingr__what">Fiber and plant omega-3</td><td class="ingr__vet">Fully hydrated in our simmered stew; a source of fiber and omega-3 <a class="ingr__src" href="https://www.preventivevet.com/pets/safe-and-unsafe-nuts-and-seeds-for-pets" target="_blank" rel="noopener">Preventive Vet</a></td></tr>
+                  <tr><th scope="row">Fresh parsley</th><td class="ingr__pct">0.30%</td><td class="ingr__what">Vitamins K and C, fresh flavor</td><td class="ingr__vet">Curly parsley, the variety recommended for dogs, adds vitamins K and C <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-parsley/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Cranberries</th><td class="ingr__pct">0.30%</td><td class="ingr__what">Antioxidants and a tart note</td><td class="ingr__vet">A source of antioxidants, vitamin C and fiber <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-cranberries/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Sunflower lecithin</th><td class="ingr__pct">0.30%</td><td class="ingr__what">Choline; helps blend the oils</td><td class="ingr__vet">A common pet-food ingredient that supplies choline <a class="ingr__src" href="https://www.dialavet.com/vet-answers/lecithin-safe-for-dogs-4584" target="_blank" rel="noopener">Dial A Vet</a></td></tr>
+                  <tr><th scope="row">Barley grass powder</th><td class="ingr__pct">0.30%</td><td class="ingr__what">Chlorophyll and green color</td><td class="ingr__vet">A small amount for chlorophyll and natural green color</td></tr>
+                  <tr><th scope="row">Blackstrap molasses</th><td class="ingr__pct">0.24%</td><td class="ingr__what">Iron, calcium, potassium and color</td><td class="ingr__vet">A small amount supplies iron, calcium and potassium <a class="ingr__src" href="https://www.dogster.com/dog-nutrition/can-dogs-have-molasses/" target="_blank" rel="noopener">Dogster, vet-reviewed</a></td></tr>
+                  <tr><th scope="row">Brazil nuts</th><td class="ingr__pct">0.20%</td><td class="ingr__what">Selenium</td><td class="ingr__vet">A natural source of selenium, measured precisely <a class="ingr__src" href="https://www.preventivevet.com/pets/safe-and-unsafe-nuts-and-seeds-for-pets" target="_blank" rel="noopener">Preventive Vet</a></td></tr>
+                  <tr><th scope="row">Nori</th><td class="ingr__pct">0.08%</td><td class="ingr__what">Iodine and trace minerals</td><td class="ingr__vet">Plain, unsalted nori is a natural source of iodine <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-seaweed/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Dried oregano</th><td class="ingr__pct">0.06%</td><td class="ingr__what">Flavor and antioxidants</td><td class="ingr__vet">Used in culinary amounts for flavor and antioxidants <a class="ingr__src" href="https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/oregano" target="_blank" rel="noopener">ASPCA Animal Poison Control</a></td></tr>
+                  <tr><th scope="row">Turmeric</th><td class="ingr__pct">0.06%</td><td class="ingr__what">Flavor and curcumin</td><td class="ingr__vet">A small amount adds curcumin, valued for joint support <a class="ingr__src" href="https://www.petmd.com/dog/wellness/4-herbs-joint-pain-and-inflammation-pets" target="_blank" rel="noopener">PetMD</a></td></tr>
+                  <tr><th scope="row">Iodized salt</th><td class="ingr__pct">0.05%</td><td class="ingr__what">Sodium, chloride and iodine</td><td class="ingr__vet">Sodium and chloride are required nutrients with AAFCO minimums <a class="ingr__src" href="https://www.aafco.org/wp-content/uploads/2023/01/Model_Bills_and_Regulations_Agenda_Midyear_2015_Final_Attachment_A.__Proposed_revisions_to_AAFCO_Nutrient_Profiles_PFC_Final_070214.pdf" target="_blank" rel="noopener">AAFCO</a></td></tr>
+                  <tr><th scope="row">Dried rosemary</th><td class="ingr__pct">0.04%</td><td class="ingr__what">Flavor and a natural antioxidant</td><td class="ingr__vet">Listed by the ASPCA as a dog-friendly herb <a class="ingr__src" href="https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants/rosemary" target="_blank" rel="noopener">ASPCA Animal Poison Control</a></td></tr>
+                  <tr><th scope="row">Taurine</th><td class="ingr__pct">0.04%</td><td class="ingr__what"><strong>Taurine-reinforced:</strong> an amino acid added to every batch for extra assurance</td><td class="ingr__vet">Supports heart health; ours is added at a small, food-level amount <a class="ingr__src" href="https://www.mspca.org/angell_services/what-is-new-with-taurine/" target="_blank" rel="noopener">MSPCA-Angell</a></td></tr>
+                  <tr><th scope="row">Kelp powder</th><td class="ingr__pct">0.03%</td><td class="ingr__what">Iodine, in a small measured amount</td><td class="ingr__vet">A natural source of iodine, measured for thyroid health <a class="ingr__src" href="https://www.akc.org/expert-advice/nutrition/can-dogs-eat-seaweed/" target="_blank" rel="noopener">AKC</a></td></tr>
+                  <tr><th scope="row">Zinc gluconate</th><td class="ingr__pct">0.01%</td><td class="ingr__what">Brings zinc up to the AAFCO level</td><td class="ingr__vet">An essential mineral with an AAFCO adult minimum <a class="ingr__src" href="https://www.aafco.org/wp-content/uploads/2023/01/Model_Bills_and_Regulations_Agenda_Midyear_2015_Final_Attachment_A.__Proposed_revisions_to_AAFCO_Nutrient_Profiles_PFC_Final_070214.pdf" target="_blank" rel="noopener">AAFCO</a></td></tr>
+                  <tr><th scope="row">Vitamin D3 (lichen)</th><td class="ingr__pct">trace</td><td class="ingr__what">Plant-derived vitamin D, to the AAFCO level</td><td class="ingr__vet">Essential for calcium balance; dosed precisely to the AAFCO level <a class="ingr__src" href="https://www.fda.gov/animal-veterinary/animal-health-literacy/vitamin-d-toxicity-dogs" target="_blank" rel="noopener">FDA</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="ingr__note">
+              Percentages are by weight of a finished batch (about 4.9 kg), calculated from our recipe
+              rather than measured in a lab; the water absorbed during slow simmering makes up about half. Vet
+              guidance summarizes the linked sources, which discuss each ingredient for dogs in general, not
+              Wonder Bowl specifically.
+            </p>
           </div>
         </details>
         <div class="recipe__beg"><span class="callout">He begs for more. The plants are flattered.</span></div>
@@ -417,6 +498,16 @@
               recipe features lentils, chickpeas, shiitake mushrooms, carrots, squash, cranberries, and essential
               plant oils. No fillers, no animal by-products, and zero artificial preservatives. Want to cook one
               yourself? Ping us at <a href="mailto:hello@wonder-bowl.com" data-contact="hello">hello@wonder-bowl.com</a> and we'll send the recipe.</p></div>
+          </details>
+          <details class="faq__item">
+            <summary>Why are there grains in Wonder Bowl?</summary>
+            <div class="faq__body"><p>Our Classic Wonder Bowl is grain-inclusive by design: every batch is simmered
+              with whole-grain quinoa and rolled oats alongside our lentils, chickpeas, and veggies. As the veterinary
+              nutritionists at <a href="https://vet.tufts.edu/foster-hospital-small-animals/specialty-services/nutrition/nutrition-faqs" target="_blank" rel="noopener">Tufts</a>
+              put it, whole grains aren't fillers: they bring vitamins, minerals, essential fatty acids, and fiber. And
+              while researchers keep studying how diet shapes canine heart health, we're happy to keep whole grains
+              in the bowl. Every batch is also <strong>taurine-reinforced</strong>, with pure taurine added on top
+              of what dogs make naturally. <strong>Good grains, happy tails.</strong></p></div>
           </details>
           <details class="faq__item">
             <summary>Are Wonder Bowls nutritionally complete and balanced?</summary>
