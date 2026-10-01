@@ -32,6 +32,10 @@
   var PENDING_KEY = "wb_pending_submissions";
   var PENDING_MAX = 25;
 
+  // Timed auto-open of the sample modal. Off for now (it felt too pushy);
+  // flip to true to bring it back.
+  var TIMED_OPEN_ENABLED = false;
+
   // How long (ms) before the modal auto-opens on first visit.
   var TIMED_OPEN_MS = 15000;
 
@@ -318,6 +322,7 @@
 
   // Timed auto-open, once per session, on first entry.
   function scheduleTimedOpen() {
+    if (!TIMED_OPEN_ENABLED) return;
     try {
       if (sessionStorage.getItem(TIMED_SHOWN_KEY)) return;
     } catch (e) { /* storage blocked — still show once this page load */ }

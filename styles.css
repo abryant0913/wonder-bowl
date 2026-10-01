@@ -239,7 +239,22 @@ p { margin: 0 0 1rem; }
 .hero__reassure li { display: flex; align-items: center; gap: 0.35rem; white-space: nowrap; }
 .hero__reassure span { color: var(--pink); font-weight: 800; font-size: 0.95rem; }
 
-.hero__media { position: relative; animation: rise 0.8s 0.1s ease both; }
+/* margin: 0 overrides the UA <figure> margin (40px sides), which was shrinking the bowl. */
+.hero__media { position: relative; margin: 0; animation: rise 0.8s 0.1s ease both; }
+
+/* Desktop: the base of the bowl lines up with the last line of .hero__sub
+   ("…and a mealtime pic.") at every width. The copy's children join the hero
+   grid directly (display: contents), so the figure can span the eyebrow → sub
+   rows and sit at their bottom edge. translate (not transform, which the rise
+   animation owns) then drops it by the transparent padding under the glass in
+   bowl-logo.png — 11.5% of the image's height. */
+@media (min-width: 901px) {
+  .hero .wrap { row-gap: 0; align-items: start; }
+  .hero__copy { display: contents; animation: none; }
+  .hero__copy > * { grid-column: 1; animation: rise 0.7s ease both; }
+  .hero__sub { margin-bottom: 0; }   /* grid margins don't collapse; .hero__actions' top margin spaces it */
+  .hero__media { grid-column: 2; grid-row: 1 / 4; align-self: end; translate: 0 11.5%; }
+}
 .hero__media img { width: 100%; }
 
 /* Scroll parallax: flying ingredients lift out of the bowl */
@@ -899,7 +914,12 @@ p { margin: 0 0 1rem; }
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
   .hero .wrap { grid-template-columns: 1fr; }
-  .hero__media { order: -1; max-width: 440px; margin: 0 auto; }
+  /* Stacked, the bowl sits at the top of the hero and the flying-ingredients
+     art overhangs it by ~0.43x its width; .field clips that overhang. A
+     percentage top margin (resolves against width, so it scales with the
+     overhang; capped where the 440px figure stops growing) lowers the bowl
+     to bring most of the ingredients into view. */
+  .hero__media { order: -1; max-width: 440px; margin: min(36%, 170px) auto 0; }
   .story .wrap { grid-template-columns: 1fr; }
   .story__media { width: 100%; max-width: 420px; margin: 0 auto; }
   .taste-test__grid { grid-template-columns: 1fr; }
