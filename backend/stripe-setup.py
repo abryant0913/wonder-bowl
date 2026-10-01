@@ -46,7 +46,7 @@ PACKS = [
         "label": "(Pack of 6)",
         "blurb": "Three days of meals. One-off, no schedule.",
         "interval": None,                      # one-time
-        "amounts": {"1-Cup": 3750, "2-Cup": 6000, "3-Cup": 8250},
+        "amounts": {"1-Cup": 3000, "2-Cup": 4800, "3-Cup": 6600},
     },
     {
         "key": "weekly",
@@ -54,7 +54,7 @@ PACKS = [
         "label": "(14-Bowl Weekly Pack)",
         "blurb": "A full week of meals, delivered every week.",
         "interval": ("week", 1),
-        "amounts": {"1-Cup": 7000, "2-Cup": 11200, "3-Cup": 15400},
+        "amounts": {"1-Cup": 5600, "2-Cup": 8960, "3-Cup": 12320},
     },
 ]
 

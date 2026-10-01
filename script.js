@@ -100,14 +100,14 @@
   // ---------------------------------------------------------------------------
   var LARGE_ORDER_LINKS = {
     once: {                 // 6-bowl packs, one-time
-      "1cup": "https://buy.stripe.com/aFafZg6lS5Wd2PjcsK4Ni05",   // $37.50
-      "2cup": "https://buy.stripe.com/7sY4gydOk0BT2Pj0K24Ni04",   // $60.00
-      "3cup": "https://buy.stripe.com/5kQ00i5hOckB61v3We4Ni03"    // $82.50
+      "1cup": "https://buy.stripe.com/bJedR8eSogAR75z3We4Ni0a",   // $30.00
+      "2cup": "https://buy.stripe.com/5kQ9AS4dK70hdtXboG4Ni0b",   // $48.00
+      "3cup": "https://buy.stripe.com/aFacN45hOact4Xr3We4Ni0c"    // $66.00
     },
     weekly: {               // 14-bowl packs, every week (save 20%)
-      "1cup": "https://buy.stripe.com/9B65kC8u084lahLdwO4Ni08",   // $70.00 / wk
-      "2cup": "https://buy.stripe.com/8x23cueSo4S90HbgJ04Ni07",   // $112.00 / wk
-      "3cup": "https://buy.stripe.com/14A6oG5hOactfC58cu4Ni06"    // $154.00 / wk
+      "1cup": "https://buy.stripe.com/28E3cudOk0BT2PjgJ04Ni0d",   // $56.00 / wk
+      "2cup": "https://buy.stripe.com/cNi7sKh0wgAR61v50i4Ni0e",   // $89.60 / wk
+      "3cup": "https://buy.stripe.com/3cI4gycKgckBblP9gy4Ni0f"    // $123.20 / wk
     }
   };
 
@@ -115,8 +115,8 @@
   // analytics value for the hand-off, and the figure the form shows live once a
   // size is picked, so nobody meets a number for the first time on Stripe.
   var LARGE_ORDER_PRICE = {
-    once:   { "1cup": 37.50, "2cup": 60.00,  "3cup": 82.50 },
-    weekly: { "1cup": 70.00, "2cup": 112.00, "3cup": 154.00 }
+    once:   { "1cup": 30.00, "2cup": 48.00,  "3cup": 66.00 },
+    weekly: { "1cup": 56.00, "2cup": 89.60,  "3cup": 123.20 }
   };
 
   var LARGE_ORDER_BOWLS = { once: 6, weekly: 14 };

@@ -222,12 +222,12 @@ still work.
 
 | Rhythm | Pack | 1-Cup | 2-Cup | 3-Cup |
 |---|---|---|---|---|
-| One-time | 6 bowls (3 days) | $37.50 | $60.00 | $82.50 |
-| Weekly — save 20% | 14 bowls (7 days) | $70.00 | $112.00 | $154.00 |
+| One-time | 6 bowls (3 days) | $30.00 | $48.00 | $66.00 |
+| Weekly — save 20% | 14 bowls (7 days) | $56.00 | $89.60 | $123.20 |
 
-Per-bowl pricing stays flat across pack sizes ($6.25 and $5.00 for the 1-Cup): the
-discount comes from the rhythm, not from bulk. In margin terms, one-time is 250%
-of at-cost and weekly 200%.
+Per-bowl pricing stays flat across pack sizes ($5.00 and $4.00 for the 1-Cup): the
+discount comes from the rhythm, not from bulk. In margin terms, one-time is 200%
+of at-cost and weekly 160%.
 
 **A bi-weekly rhythm was designed and then cut.** It priced well (30% off, half the
 delivery trips) but a 28-bowl pack is up to 14 days of food in someone's kitchen,
