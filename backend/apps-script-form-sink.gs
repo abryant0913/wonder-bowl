@@ -28,9 +28,9 @@
 
 var SHEET_NAME = "Submissions";
 
-// Who gets an email for every new order. The deploying account (you) always
-// does; add more addresses here, e.g. ["robert@example.com"].
-var EXTRA_ALERT_EMAILS = [];
+// Who gets an email for every new order. Add more addresses to the list to
+// copy someone else in.
+var ALERT_EMAILS = ["pyechik@gmail.com"];
 
 // Column order for the sheet. Adding a field here is enough — the header row is
 // created on first write and any new trailing columns are appended on the fly.
@@ -155,8 +155,8 @@ function notifyNewOrder(p, repeat) {
   lines.push("", "All orders: " + SpreadsheetApp.getActiveSpreadsheet().getUrl());
   lines.push("Not every order has paid yet: Stripe is the record of payment.");
 
-  var to = [Session.getEffectiveUser().getEmail()].concat(EXTRA_ALERT_EMAILS)
-    .filter(String).join(",");
+  var to = ALERT_EMAILS.filter(Boolean).join(",");
+  if (!to) return;
   MailApp.sendEmail({ to: to, subject: subject, body: lines.join("\n"),
     replyTo: p.email || undefined, name: "Wonder Bowl orders" });
 }
