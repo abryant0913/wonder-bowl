@@ -932,3 +932,7 @@ p { margin: 0 0 1rem; }
   .field-row { grid-template-columns: 1fr; }
   .header-cta { display: none; }
 }
+
+/* First-sample-free offer card: full width above the two rhythms. */
+.freq-card--offer { grid-column: 1 / -1; }
+.freq-card[hidden] { display: none; }
