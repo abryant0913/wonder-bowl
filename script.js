@@ -125,6 +125,48 @@
 
   var LARGE_ORDER_BOWLS = { once: 6, weekly: 14 };
 
+  // ---------------------------------------------------------------------------
+  // FIRST SAMPLE SET FREE, THEN WEEKLY — a gated offer.
+  //
+  // Each link below is a Payment Link on the SAME weekly 14-bowl price as
+  // LARGE_ORDER_LINKS.weekly, with a 7-day free trial. Stripe collects the card,
+  // charges $0 today and starts the subscription as "trialing"; we ship the free
+  // 6-bowl sample set during that week, and the first 14-bowl pack is charged
+  // and delivered when the trial ends — unless they cancel first, which costs
+  // nothing (Stripe customer portal, CANCEL_URL on thank-you.html).
+  //
+  // The free trial IS the coupon: there is no Stripe coupon object to manage.
+  // The offer only shows for visitors who arrive with ?offer=<code> below, so
+  // it can be handed to a partner or printed on a card and switched off by
+  // simply no longer sharing the link (or emptying these URLs).
+  // ---------------------------------------------------------------------------
+  var TRIAL_OFFER_CODES = ["firstfree"];
+  var TRIAL_DAYS = 7;
+  LARGE_ORDER_LINKS.trial = {
+    "1cup": "https://buy.stripe.com/fZufZg25C1FXahLakC4Ni0g",   // free sample, then $56.00 / wk
+    "2cup": "https://buy.stripe.com/aFadR839G98pahL9gy4Ni0h",   // free sample, then $89.60 / wk
+    "3cup": "https://buy.stripe.com/28E6oG5hObgxfC5eAS4Ni0i"    // free sample, then $123.20 / wk
+  };
+  LARGE_ORDER_PRICE.trial = LARGE_ORDER_PRICE.weekly;
+  LARGE_ORDER_BOWLS.trial = 14;
+
+  var OFFER_KEY = "wb_offer";
+  function trialOfferActive() {
+    var code = "";
+    try { code = (new URLSearchParams(window.location.search).get("offer") || "").trim().toLowerCase(); } catch (e) {}
+    if (TRIAL_OFFER_CODES.indexOf(code) !== -1) {
+      // Remembered for the session so an in-site click or reload keeps the offer.
+      try { sessionStorage.setItem(OFFER_KEY, code); } catch (e) {}
+      return true;
+    }
+    try { return TRIAL_OFFER_CODES.indexOf(sessionStorage.getItem(OFFER_KEY) || "") !== -1; } catch (e) { return false; }
+  }
+
+  function firstChargeDate() {
+    var d = new Date(Date.now() + TRIAL_DAYS * 864e5);
+    return d.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+  }
+
   function largeOrderUrlFor(freq, size, email) {
     var byFreq = LARGE_ORDER_LINKS[freq] || {};
     var base = byFreq[size];
@@ -371,7 +413,7 @@
     if (orderLastFocused && orderLastFocused.focus) orderLastFocused.focus();
   }
 
-  var ORDER_LABELS = { once: "Just this once", weekly: "Every week" };
+  var ORDER_LABELS = { once: "Just this once", weekly: "Every week", trial: "Free sample set, then weekly" };
   var orderFreq = "";   // the rhythm chosen in step 1
 
   function showOrderStep(n) {
@@ -403,6 +445,24 @@
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && orderModalOpen()) closeOrderModal();
     });
+
+    // The free-sample offer card exists in the markup but only shows for
+    // visitors who arrived on an offer link.
+    var offerOn = trialOfferActive() && !!(LARGE_ORDER_LINKS.trial["1cup"] || LARGE_ORDER_LINKS.trial["2cup"] || LARGE_ORDER_LINKS.trial["3cup"]);
+    var trialCard = orderModal.querySelector('[data-order-freq="trial"]');
+    if (trialCard) trialCard.hidden = !offerOn;
+    if (offerOn) {
+      var trialDate = trialCard && trialCard.querySelector("[data-trial-date]");
+      if (trialDate) trialDate.textContent = firstChargeDate();
+      // Arriving on the offer link should land on the offer, not the homepage.
+      if (trialOfferActive() && /[?&]offer=/.test(window.location.search)) {
+        window.setTimeout(function () {
+          if (!orderModalOpen() && !(document.getElementById("signup-modal") && !document.getElementById("signup-modal").hidden)) {
+            openOrderModal("offer_link");
+          }
+        }, 1200);
+      }
+    }
 
     // --- Step 1: the rhythm ---------------------------------------------------
     orderModal.querySelectorAll("[data-order-freq]").forEach(function (card) {
@@ -448,6 +508,13 @@
         return;
       }
       priceOut.hidden = false;
+      if (orderFreq === "trial") {
+        priceOut.innerHTML =
+          "Your 6-bowl sample set is <strong>free</strong>. From " + firstChargeDate() +
+          ", one 14-bowl pack every week at <strong>$" + price.toFixed(2) + "</strong>. " +
+          "Cancel any time before then and you pay nothing.";
+        return;
+      }
       priceOut.innerHTML =
         "One " + LARGE_ORDER_BOWLS[orderFreq] + "-bowl pack: <strong>$" + price.toFixed(2) + "</strong>" +
         (orderFreq === "weekly" ? " a week" : "") +
@@ -498,7 +565,8 @@
       }
 
       var size = payload.dog_size || "";
-      var packValue = (LARGE_ORDER_PRICE[orderFreq] || {})[size] || 0;
+      // A trial checkout charges nothing today, so it is worth $0 until it converts.
+      var packValue = orderFreq === "trial" ? 0 : ((LARGE_ORDER_PRICE[orderFreq] || {})[size] || 0);
 
       track("large_order_submit", {
         frequency: orderFreq,

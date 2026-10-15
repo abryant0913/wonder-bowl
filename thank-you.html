@@ -40,10 +40,26 @@
     <div class="wrap" style="max-width:640px;">
       <img src="assets/web/logo-white-crop.svg" alt="Wonder Bowl" style="height:60px;width:auto;margin:0 auto 1.5rem;" />
       <h1>Thank you — your bowls are on the way!</h1>
-      <p class="lede" style="margin:1rem auto 1.75rem;max-width:44ch;">
+      <p class="lede" id="generic-thanks" style="margin:1rem auto 1.75rem;max-width:44ch;">
         We've got your order. We'll email you to confirm your San Francisco delivery day —
         keep an eye out, good things are simmering.
       </p>
+      <!-- Free-sample-then-weekly sign-ups (?freq=trial) see this instead of the
+           generic line above: what ships now, when the first charge lands, and a
+           one-click way out before it does. -->
+      <div id="trial-thanks" hidden>
+        <p class="lede" style="margin:0 auto 1rem;max-width:44ch;">
+          Your <strong>free 6-bowl sample set</strong> ships this week. Your first 14-bowl weekly pack
+          follows on <strong data-trial-date>next week</strong>, and that's when your card is first charged.
+        </p>
+        <p class="lede" style="margin:0 auto 1.75rem;max-width:44ch;">
+          Not the bowl for your pup? Cancel any time before then and you won't pay a cent.
+          It takes one click, with just your email.
+        </p>
+        <p style="margin:0 0 1.75rem;">
+          <a class="btn btn--ghost" id="cancel-link" href="mailto:hello@wonder-bowl.com?subject=Cancel%20my%20weekly%20bowls">Manage or cancel my plan</a>
+        </p>
+      </div>
       <a class="btn btn--primary btn--lg" id="back-link" href="index.html">Back to Wonder Bowl</a>
       <p class="final-cta__fine" style="margin-top:1.25rem;">A mealtime pic + honest feedback is all we ask in return. 🐾</p>
     </div>
@@ -82,6 +98,27 @@
       var isLarge = (params.get("order") || "") === "large";
       var freq = (params.get("freq") || "").toLowerCase();
 
+      // Stripe customer portal login link (Settings -> Billing -> Customer portal).
+      // Customers enter their email, get a one-time link, and cancel there. Until
+      // it is pasted in, the button falls back to an email to us.
+      var CANCEL_URL = "https://billing.stripe.com/p/login/cNi4gyh0w70h89D3We4Ni00";
+      var TRIAL_DAYS = 7;
+      if (freq === "trial") {
+        var box = document.getElementById("trial-thanks");
+        if (box) {
+          box.hidden = false;
+          var generic = document.getElementById("generic-thanks");
+          if (generic) generic.hidden = true;
+          var d = new Date(Date.now() + TRIAL_DAYS * 864e5);
+          var dateEl = box.querySelector("[data-trial-date]");
+          if (dateEl) dateEl.textContent = d.toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+          var cancel = document.getElementById("cancel-link");
+          if (cancel && CANCEL_URL) cancel.href = CANCEL_URL;
+        }
+        var h1 = document.querySelector("h1");
+        if (h1) h1.textContent = "Your free sample set is on the way!";
+      }
+
       // Which design the buyer started on. Stripe's round-trip drops every URL
       // parameter and starts a fresh referrer, so storage is the only thing
       // that survives it. Without this the purchase event — the one number the
@@ -99,7 +136,7 @@
           // tier comes from the link's own redirect (?tier=1cup) — each large-order
           // Payment Link sells exactly one size, so the size is known here even
           // though the QUANTITY never is. Still no value: see above.
-          var packs = { once: "6-bowl pack", weekly: "14-bowl weekly pack" };
+          var packs = { once: "6-bowl pack", weekly: "14-bowl weekly pack", trial: "free sample, then 14-bowl weekly pack" };
           window.wbTrack("purchase", {
             currency: "USD",
             order_type: "large",

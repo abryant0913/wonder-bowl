@@ -1483,3 +1483,7 @@ strong { font-weight: 600; }
   border-top: 1px solid var(--rule);
 }
 .pricing__more-q { font-size: 0.95rem; opacity: 0.82; margin: 0 0 1rem; max-width: 46ch; }
+
+/* First-sample-free offer card: full width above the two rhythms. */
+.freq-card--offer { grid-column: 1 / -1; }
+.freq-card[hidden] { display: none; }

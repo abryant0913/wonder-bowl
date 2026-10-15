@@ -43,7 +43,7 @@
   <script>
     try { localStorage.setItem("wb_design", "classic"); } catch (e) {}
   </script>
-  <link rel="stylesheet" href="styles.css?v=16" />
+  <link rel="stylesheet" href="styles.css?v=17" />
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
@@ -763,6 +763,14 @@
         <p class="modal__sub">Pick a rhythm. You&rsquo;ll choose bowl sizes and how many packs on the next step.</p>
 
         <div class="freq">
+          <button type="button" class="freq-card freq-card--featured freq-card--offer" data-order-freq="trial" hidden>
+            <span class="freq-card__flag">Your first sample set is free</span>
+            <span class="freq-card__name">Try free, then every week</span>
+            <span class="freq-card__cost"><span class="freq-card__amt">$0</span><span class="freq-card__unit">today</span></span>
+            <span class="freq-card__note">A free 6-bowl sample set this week. Then a 14-bowl pack every week from <span data-trial-date>next week</span> at $4.00 a 1-cup bowl. Cancel any time before and you pay nothing.</span>
+            <span class="freq-card__go">Claim my free set &rarr;</span>
+          </button>
+
           <button type="button" class="freq-card" data-order-freq="once">
             <span class="freq-card__name">Just this once</span>
             <span class="freq-card__cost"><span class="freq-card__amt">$5.00</span><span class="freq-card__unit">per 1-cup bowl</span></span>
@@ -879,6 +887,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=14"></script>
+  <script src="script.js?v=15"></script>
 </body>
 </html>
