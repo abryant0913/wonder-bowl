@@ -28,6 +28,10 @@
 
 var SHEET_NAME = "Submissions";
 
+// Who gets an email for every new order. The deploying account (you) always
+// does; add more addresses here, e.g. ["robert@example.com"].
+var EXTRA_ALERT_EMAILS = [];
+
 // Column order for the sheet. Adding a field here is enough — the header row is
 // created on first write and any new trailing columns are appended on the fly.
 var COLUMNS = [
@@ -94,13 +98,100 @@ function doPost(e) {
       return typeof v === "object" ? JSON.stringify(v) : String(v);
     });
 
+    // Checked before appending, so the new row doesn't match itself.
+    var repeat = findRepeat(sheet, header, payload);
+
     sheet.appendRow(row);
+
+    // An alert failure must never lose the order, which is already saved above.
+    try { notifyNewOrder(payload, repeat); } catch (mailErr) { console.error(mailErr); }
+
     return jsonOut({ ok: true });
   } catch (err) {
     return jsonOut({ ok: false, error: String(err) });
   } finally {
     lock.releaseLock();
   }
+}
+
+// ---------------------------------------------------------------------------
+// NEW-ORDER EMAIL ALERT
+// ---------------------------------------------------------------------------
+var KIND_LABELS = {
+  trial:  "FREE SAMPLE, then weekly (trial)",
+  weekly: "Weekly 14-bowl pack",
+  once:   "One-time 6-bowl pack",
+  sample: "3-day sample set (at cost)"
+};
+
+function notifyNewOrder(p, repeat) {
+  var kind = p.order_type === "large" ? (p.frequency || "large") : "sample";
+  var label = KIND_LABELS[kind] || kind;
+  var size = (p.dog_size || "").replace("cup", "-cup");
+
+  var subject = (repeat ? "⚠️ REPEAT? " : "") +
+    "New Wonder Bowl order: " + label + " · " + (p.dog_name || "?") +
+    (size ? " (" + size + ")" : "");
+
+  var lines = [
+    label,
+    "",
+    "Dog:      " + (p.dog_name || "") + (p.dog_age ? ", " + p.dog_age : "") + (size ? ", " + size : ""),
+    "Guardian: " + (p.name || ""),
+    "Email:    " + (p.email || ""),
+    "Phone:    " + (p.phone || ""),
+    "Address:  " + (p.address || ""),
+    "Source:   " + ([p.ad_variant, p.utm_source, p.utm_campaign].filter(Boolean).join(" / ") || "direct")
+  ];
+  if (kind === "trial") {
+    lines.push("", "Ship the free 6-bowl sample set now. Stripe charges the first weekly",
+      "pack 7 days after sign-up unless they cancel. Check Stripe > Subscriptions",
+      "(Trialing) before delivering the first paid pack.");
+  }
+  if (repeat) {
+    lines.push("", "Heads up: this " + repeat.field + " matches an earlier order (row " +
+      repeat.row + ", " + repeat.when + "). Check before sending anything free.");
+  }
+  lines.push("", "All orders: " + SpreadsheetApp.getActiveSpreadsheet().getUrl());
+  lines.push("Not every order has paid yet: Stripe is the record of payment.");
+
+  var to = [Session.getEffectiveUser().getEmail()].concat(EXTRA_ALERT_EMAILS)
+    .filter(String).join(",");
+  MailApp.sendEmail({ to: to, subject: subject, body: lines.join("\n"),
+    replyTo: p.email || undefined, name: "Wonder Bowl orders" });
+}
+
+// Same email, phone or street address as any earlier row?
+function findRepeat(sheet, header, p) {
+  var lastRow = sheet.getLastRow();
+  if (lastRow < 2) return null;
+  var data = sheet.getRange(2, 1, lastRow - 1, header.length).getValues();
+  var norm = {
+    email:   function (v) { return String(v || "").trim().toLowerCase(); },
+    phone:   function (v) { var d = String(v || "").replace(/\D/g, ""); return d.length >= 7 ? d.slice(-10) : ""; },
+    address: function (v) { return String(v || "").toLowerCase().split(",")[0].replace(/[^a-z0-9]/g, ""); }
+  };
+  var fields = ["email", "phone", "address"];
+  for (var i = data.length - 1; i >= 0; i--) {
+    for (var f = 0; f < fields.length; f++) {
+      var key = fields[f], col = header.indexOf(key);
+      if (col === -1) continue;
+      var a = norm[key](p[key]), b = norm[key](data[i][col]);
+      if (a && a === b) {
+        var whenCol = header.indexOf("submitted_at");
+        return { field: key, row: i + 2, when: whenCol === -1 ? "" : String(data[i][whenCol]).slice(0, 10) };
+      }
+    }
+  }
+  return null;
+}
+
+// Run this once from the editor (select it, press Run) to get the email
+// permission prompt out of the way and send yourself a sample alert.
+function testAlert() {
+  notifyNewOrder({ order_type: "large", frequency: "trial", dog_name: "Test Dog", dog_age: "3",
+    dog_size: "2cup", name: "Test Person", email: "test@example.com", phone: "4155550100",
+    address: "1 Test St, San Francisco", utm_source: "test" }, null);
 }
 
 // A GET on the /exec URL is a convenient "is this deployment alive?" check.
