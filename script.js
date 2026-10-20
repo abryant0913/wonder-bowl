@@ -126,14 +126,15 @@
   var LARGE_ORDER_BOWLS = { once: 6, weekly: 14 };
 
   // TOPPER — 6 bowls a week, mixed into the dog's current food rather than
-  // replacing it. Priced the same as a one-time 6-bowl pack (no weekly
-  // discount); one link per size, like every other large-order link.
+  // replacing it. 10% off the one-time 6-bowl pack, so it sits between
+  // one-time and the 14-bowl weekly plan; one link per size, like every
+  // other large-order link.
   LARGE_ORDER_LINKS.topper = {
-    "1cup": "",   // $30.00 / wk
-    "2cup": "",   // $48.00 / wk
-    "3cup": ""    // $66.00 / wk
+    "1cup": "",   // $27.00 / wk
+    "2cup": "",   // $43.20 / wk
+    "3cup": ""    // $59.40 / wk
   };
-  LARGE_ORDER_PRICE.topper = LARGE_ORDER_PRICE.once;
+  LARGE_ORDER_PRICE.topper = { "1cup": 27.00, "2cup": 43.20, "3cup": 59.40 };
   LARGE_ORDER_BOWLS.topper = 6;
 
   // ---------------------------------------------------------------------------
