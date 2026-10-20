@@ -125,6 +125,17 @@
 
   var LARGE_ORDER_BOWLS = { once: 6, weekly: 14 };
 
+  // TOPPER — 6 bowls a week, mixed into the dog's current food rather than
+  // replacing it. Priced the same as a one-time 6-bowl pack (no weekly
+  // discount); one link per size, like every other large-order link.
+  LARGE_ORDER_LINKS.topper = {
+    "1cup": "",   // $30.00 / wk
+    "2cup": "",   // $48.00 / wk
+    "3cup": ""    // $66.00 / wk
+  };
+  LARGE_ORDER_PRICE.topper = LARGE_ORDER_PRICE.once;
+  LARGE_ORDER_BOWLS.topper = 6;
+
   // ---------------------------------------------------------------------------
   // FIRST SAMPLE SET FREE, THEN WEEKLY — a gated offer.
   //
@@ -413,7 +424,7 @@
     if (orderLastFocused && orderLastFocused.focus) orderLastFocused.focus();
   }
 
-  var ORDER_LABELS = { once: "Just this once", weekly: "Every week", trial: "Free sample set, then weekly" };
+  var ORDER_LABELS = { once: "Just this once", weekly: "Every week", trial: "Free sample set, then weekly", topper: "Weekly topper" };
   var orderFreq = "";   // the rhythm chosen in step 1
 
   function showOrderStep(n) {
@@ -517,7 +528,7 @@
       }
       priceOut.innerHTML =
         "One " + LARGE_ORDER_BOWLS[orderFreq] + "-bowl pack: <strong>$" + price.toFixed(2) + "</strong>" +
-        (orderFreq === "weekly" ? " a week" : "") +
+        (orderFreq === "weekly" || orderFreq === "topper" ? " a week" : "") +
         ". You'll choose how many at checkout.";
     }
     if (sizeSelect) sizeSelect.addEventListener("change", updatePackPrice);

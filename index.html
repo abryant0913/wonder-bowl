@@ -43,7 +43,7 @@
   <script>
     try { localStorage.setItem("wb_design", "classic"); } catch (e) {}
   </script>
-  <link rel="stylesheet" href="styles.css?v=17" />
+  <link rel="stylesheet" href="styles.css?v=18" />
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
@@ -534,6 +534,21 @@
               current food. This 50/50 mix provides a gentle 3-day transition taste test.</p></div>
           </details>
           <details class="faq__item">
+            <summary>Not ready to switch fully yet?</summary>
+            <div class="faq__body"><p>No problem: Wonder Bowl makes a great <strong>topper</strong>. Mix it into
+              your dog&rsquo;s current food and you both get the best of both bowls: the flexibility, convenience and
+              comfort of the food they already know, with the superior nutrition and fresh yum of Wonder Bowl on top.
+              Our weekly topper plan delivers 6 bowls a week. Choose <strong>Weekly topper</strong> when you place an order.</p></div>
+          </details>
+          <details class="faq__item">
+            <summary>Will my dog&rsquo;s poop look different?</summary>
+            <div class="faq__body"><p>For a few days, it might, and that&rsquo;s normal with any change of food. Give it
+              <strong>about 3 days</strong> for your dog&rsquo;s stool to look like itself again. You may also spot a
+              <strong>red tint</strong> or a few <strong>stray seeds</strong>. No need to worry: beets can stain the
+              outside of the stool red, and some dogs absorb the nutrients from pumpkin seeds without fully breaking
+              them down. If things still seem off after a few days, or your dog seems unwell, check in with your vet.</p></div>
+          </details>
+          <details class="faq__item">
             <summary>What happens after I sign up as a tester?</summary>
             <div class="faq__body"><p>Once you submit, we deliver your sample set directly to your SF door. After your dog
               tries the food, we email a short 2-minute survey for your feedback and mealtime photos. Launch testers
@@ -786,6 +801,16 @@
             <span class="freq-card__go">Choose bowls &rarr;</span>
           </button>
 
+          <!-- Topper: for dogs not switching fully. Full width under the two
+               main rhythms so it reads as an alternative, not a third tier. -->
+          <button type="button" class="freq-card freq-card--wide" data-order-freq="topper">
+            <span class="freq-card__flag">Not ready to switch fully?</span>
+            <span class="freq-card__name">Weekly topper</span>
+            <span class="freq-card__cost"><span class="freq-card__amt">$5.00</span><span class="freq-card__unit">per 1-cup bowl</span></span>
+            <span class="freq-card__note">A 6-bowl pack every week to mix into your dog&rsquo;s current food. From $30 a week.</span>
+            <span class="freq-card__go">Choose bowls &rarr;</span>
+          </button>
+
         </div>
 
         <p class="modal__note" data-order-note hidden>
@@ -887,6 +912,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=15"></script>
+  <script src="script.js?v=16"></script>
 </body>
 </html>
