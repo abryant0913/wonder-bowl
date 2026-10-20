@@ -43,7 +43,7 @@
   <script>
     try { localStorage.setItem("wb_design", "classic"); } catch (e) {}
   </script>
-  <link rel="stylesheet" href="styles.css?v=17" />
+  <link rel="stylesheet" href="styles.css?v=18" />
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
@@ -534,6 +534,21 @@
               current food. This 50/50 mix provides a gentle 3-day transition taste test.</p></div>
           </details>
           <details class="faq__item">
+            <summary>Can I use it as a topper? I&rsquo;m not ready to go all veggie.</summary>
+            <div class="faq__body"><p>Absolutely! Think of it as the sprinkles on top. Mix Wonder Bowl into your
+              pup&rsquo;s usual food and you both get the best of both bowls: the flexibility, convenience and comfort of
+              what they already know, plus the superior nutrition and fresh yum of Wonder Bowl. Pick
+              <strong>Weekly topper</strong> when you order for 6 bowls a week, and go veggie at your own pace.</p></div>
+          </details>
+          <details class="faq__item">
+            <summary>Will my dog&rsquo;s poop look weird?</summary>
+            <div class="faq__body"><p>Maybe a little, for a few days! Tummies need <strong>about 3 days</strong> to settle
+              into any new food. A <strong>red tint</strong>? That&rsquo;s just beets. A <strong>stray seed</strong> or two?
+              Some pups soak up the good stuff from pumpkin seeds without breaking them all the way down. Still off after
+              a few days? Slow the switch with a bit more of their usual food, and email us anytime at
+              <a href="mailto:help@wonder-bowl.com">help@wonder-bowl.com</a>.</p></div>
+          </details>
+          <details class="faq__item">
             <summary>What happens after I sign up as a tester?</summary>
             <div class="faq__body"><p>Once you submit, we deliver your sample set directly to your SF door. After your dog
               tries the food, we email a short 2-minute survey for your feedback and mealtime photos. Launch testers
@@ -778,7 +793,17 @@
             <span class="freq-card__go">Choose bowls &rarr;</span>
           </button>
 
-          <button type="button" class="freq-card freq-card--featured" data-order-freq="weekly">
+          <!-- Topper: for dogs not switching fully yet. Sits beside one-time;
+               the 14-bowl weekly plan gets the full-width spot below. -->
+          <button type="button" class="freq-card" data-order-freq="topper">
+            <span class="freq-card__flag">Save 10%</span>
+            <span class="freq-card__name">Weekly topper</span>
+            <span class="freq-card__cost"><span class="freq-card__amt">$4.50</span><span class="freq-card__unit">per 1-cup bowl</span></span>
+            <span class="freq-card__note">Not ready to go all veggie? A 6-bowl pack every week to mix into their usual food. From $27.</span>
+            <span class="freq-card__go">Choose bowls &rarr;</span>
+          </button>
+
+          <button type="button" class="freq-card freq-card--featured freq-card--wide" data-order-freq="weekly">
             <span class="freq-card__flag">Save 20%</span>
             <span class="freq-card__name">Every week</span>
             <span class="freq-card__cost"><span class="freq-card__amt">$4.00</span><span class="freq-card__unit">per 1-cup bowl</span></span>
@@ -887,6 +912,6 @@
     </div>
   </div>
 
-  <script src="script.js?v=15"></script>
+  <script src="script.js?v=16"></script>
 </body>
 </html>

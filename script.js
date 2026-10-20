@@ -125,6 +125,18 @@
 
   var LARGE_ORDER_BOWLS = { once: 6, weekly: 14 };
 
+  // TOPPER — 6 bowls a week, mixed into the dog's current food rather than
+  // replacing it. 10% off the one-time 6-bowl pack, so it sits between
+  // one-time and the 14-bowl weekly plan; one link per size, like every
+  // other large-order link.
+  LARGE_ORDER_LINKS.topper = {
+    "1cup": "https://buy.stripe.com/00w5kC4dKdoF89DboG4Ni0j",   // $27.00 / wk
+    "2cup": "https://buy.stripe.com/3cI4gy9y4doF9dHfEW4Ni0k",   // $43.20 / wk
+    "3cup": "https://buy.stripe.com/28E6oGbGc4S94XrdwO4Ni0l"    // $59.40 / wk
+  };
+  LARGE_ORDER_PRICE.topper = { "1cup": 27.00, "2cup": 43.20, "3cup": 59.40 };
+  LARGE_ORDER_BOWLS.topper = 6;
+
   // ---------------------------------------------------------------------------
   // FIRST SAMPLE SET FREE, THEN WEEKLY — a gated offer.
   //
@@ -413,7 +425,7 @@
     if (orderLastFocused && orderLastFocused.focus) orderLastFocused.focus();
   }
 
-  var ORDER_LABELS = { once: "Just this once", weekly: "Every week", trial: "Free sample set, then weekly" };
+  var ORDER_LABELS = { once: "Just this once", weekly: "Every week", trial: "Free sample set, then weekly", topper: "Weekly topper" };
   var orderFreq = "";   // the rhythm chosen in step 1
 
   function showOrderStep(n) {
@@ -517,7 +529,7 @@
       }
       priceOut.innerHTML =
         "One " + LARGE_ORDER_BOWLS[orderFreq] + "-bowl pack: <strong>$" + price.toFixed(2) + "</strong>" +
-        (orderFreq === "weekly" ? " a week" : "") +
+        (orderFreq === "weekly" || orderFreq === "topper" ? " a week" : "") +
         ". You'll choose how many at checkout.";
     }
     if (sizeSelect) sizeSelect.addEventListener("change", updatePackPrice);
