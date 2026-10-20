@@ -130,9 +130,9 @@
   // one-time and the 14-bowl weekly plan; one link per size, like every
   // other large-order link.
   LARGE_ORDER_LINKS.topper = {
-    "1cup": "",   // $27.00 / wk
-    "2cup": "",   // $43.20 / wk
-    "3cup": ""    // $59.40 / wk
+    "1cup": "https://buy.stripe.com/00w5kC4dKdoF89DboG4Ni0j",   // $27.00 / wk
+    "2cup": "https://buy.stripe.com/3cI4gy9y4doF9dHfEW4Ni0k",   // $43.20 / wk
+    "3cup": "https://buy.stripe.com/28E6oGbGc4S94XrdwO4Ni0l"    // $59.40 / wk
   };
   LARGE_ORDER_PRICE.topper = { "1cup": 27.00, "2cup": 43.20, "3cup": 59.40 };
   LARGE_ORDER_BOWLS.topper = 6;
